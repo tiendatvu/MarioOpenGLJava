@@ -10,6 +10,8 @@ Main.java
  Main
 jade/LevelScene.java
  jade.LevelScene
+renderer/Shader.java
+ renderer.Shader
 jade/Window.java
  jade.Window
 jade/LevelEditorScene.java
