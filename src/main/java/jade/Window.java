@@ -47,6 +47,7 @@ public class Window {
     }
 
     // window can only be created by calling this function
+    // singleton partern
     public static Window get() {
         if (Window.window == null) {
             Window.window = new Window();

@@ -4,7 +4,10 @@ import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import org.w3c.dom.Text;
 import renderer.Shader;
+import renderer.Texture;
 import util.Time;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -14,11 +17,19 @@ public class LevelEditorScene extends Scene {
     private int vertexID, fragmentID, shaderProgram;
 
     private float[] vertexArray = {
-          // position                 // color
-            100.5f, -0.5f,   0.0f,    1.0f, 0.0f, 0.0f, 1.0f, // bottom right 0
-           -0.5f,    100.5f, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f, // top    left  1
-            100.5f,  100.5f, 0.0f,    1.0f, 0.0f, 1.0f, 1.0f, // top    right 2
-           -0.5f,   -0.5f,   0.0f,    1.0f, 1.0f, 0.0f, 1.0f, // bottom left  3
+            // position              // color                  // UV coordinates
+            100.5f, -0.5f,   0.0f,   1.0f, 0.0f, 0.0f, 1.0f,   1, 0,// bottom right 0
+           -0.5f,    100.5f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,   0, 1,// top    left  1
+            100.5f,  100.5f, 0.0f,   1.0f, 0.0f, 1.0f, 1.0f,   1, 1,// top    right 2
+           -0.5f,   -0.5f,   0.0f,   1.0f, 1.0f, 0.0f, 1.0f,   0, 0// bottom left  3
+
+            // the above coordinates is the original ones -> but the images is flipped
+            // -> can fix it quickly by reverse the y in UV coordinates like belows
+//            // position               // color                  // UV Coordinates
+//            100f,   0f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f,     1, 1, // Bottom right 0
+//            0f, 100f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f,     0, 0, // Top left     1
+//            100f, 100f, 0.0f ,      1.0f, 0.0f, 1.0f, 1.0f,     1, 0, // Top right    2
+//            0f,   0f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f,     0, 1  // Bottom left  3
     };
 
     // IMPORTANT: Must be in counter-clockwise order
@@ -35,6 +46,7 @@ public class LevelEditorScene extends Scene {
     private int vaoID, vboID, eboID;
 
     private Shader defaultShader;
+    private Texture testTexture;
 
     public LevelEditorScene() {
     }
@@ -47,6 +59,7 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f(-200, -300));
         defaultShader = new Shader("assets/shaders/default.glsl");
         defaultShader.compile();
+        this.testTexture = new Texture("assets/images/testImage.png");
 
         // ============================================================
         // Generate VAO, VBO, and EBO buffer objects, and send to GPU
@@ -75,24 +88,33 @@ public class LevelEditorScene extends Scene {
         // Add the vertex attribute pointers
         int positionsSize = 3;
         int colorSize = 4;
-        int floatSizeBytes = 4;
-        int vertexSizeBytes = (positionsSize + colorSize) * floatSizeBytes;
+        int uvSize = 2;
+        int vertexSizeBytes = (positionsSize + colorSize + uvSize) * Float.BYTES;
 
         // index = 0: assign for position (location = 0 in the vertex shader)
         // pointer to offset = 0: offset in the array of data (vertex data)
         glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionsSize * floatSizeBytes);
+        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionsSize * Float.BYTES);
         glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, uvSize, GL_FLOAT, false, vertexSizeBytes, (positionsSize + colorSize) * Float.BYTES);
+        glEnableVertexAttribArray(2);
     }
 
     @Override
     public void update(float dt) {
-//        camera.position.x -= dt * 50.0f;
-//        camera.position.y -= dt * 20.0f;
+        camera.position.x -= dt * 50.0f;
+        camera.position.y -= dt * 20.0f;
 
         defaultShader.use();
+
+        // Upload texture to shader
+        defaultShader.uploadTexture("TEX_SAMPLE", 0);
+        glActiveTexture(GL_TEXTURE0);
+        testTexture.bind();
+
         defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
         defaultShader.uploadMat4f("uView", camera.getViewMatrix());
         defaultShader.uploadFloat("uTime", Time.getTime());
