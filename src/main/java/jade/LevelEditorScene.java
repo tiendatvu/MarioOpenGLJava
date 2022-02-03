@@ -1,14 +1,17 @@
 package jade;
 
+import components.FontRenderer;
+import components.SpriteRenderer;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import org.w3c.dom.Text;
 import renderer.Shader;
 import renderer.Texture;
 import util.Time;
+
+import javax.swing.*;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -48,11 +51,26 @@ public class LevelEditorScene extends Scene {
     private Shader defaultShader;
     private Texture testTexture;
 
+    GameObject testObj;
+    private boolean firstTime = false;
+
     public LevelEditorScene() {
     }
 
     @Override
     public void init() {
+        System.out.println("[init] Creating 'test object'");
+        this.testObj = new GameObject("test object");
+        this.testObj.addComponent(new SpriteRenderer());
+        this.testObj.addComponent(new FontRenderer());
+
+        // Now, we could add multiple instances of ONE COMPONENT TO 1 GAME OBJECT
+        this.testObj.addComponent(new SpriteRenderer());
+        // TODO: try to add one more FontRenderer or SpriteRenderer and then remove the class
+        //       -> check mechanism of component pattern here when adding/removing/checking component with class name
+        this.testObj.addComponent(new FontRenderer()); // start 2 times -> find the SpriteRenderer twice
+        this.addGameObjectToScene(this.testObj);
+
         // ============================================================
         // Compile and link shaders
         // ============================================================
@@ -139,5 +157,17 @@ public class LevelEditorScene extends Scene {
         glUseProgram(0); // unbind the program
 
         defaultShader.detach();
+
+        if (!firstTime) {
+            System.out.println("[update] Creating another game object");
+            GameObject go = new GameObject("Game test 2");
+            go.addComponent(new SpriteRenderer());
+            this.addGameObjectToScene(go);
+            firstTime = true;
+        }
+
+        for (GameObject go : this.gameObjects) {
+            go.update(dt);
+        }
     }
 }
