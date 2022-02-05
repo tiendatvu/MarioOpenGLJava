@@ -3,6 +3,9 @@ package jade;
 import components.SpriteRenderer;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import util.AssetPool;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class LevelEditorScene extends Scene {
 
@@ -36,12 +39,31 @@ public class LevelEditorScene extends Scene {
                 this.addGameObjectToScene(go);
             }
         }
+
+        loadResources();
+    }
+
+    private void loadResources() {
+        // Load to init/compile the shader files
+        AssetPool.getShader("assets/shaders/default.glsl");
     }
 
     @Override
     public void update(float dt) {
         System.out.println("dt: " + dt);
         System.out.println("FPS: " + (1.0 / dt));
+
+        if (KeyListener.isKeyPressed(GLFW_KEY_RIGHT)) {
+            camera.position.x += 100f * dt;
+        } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT)) {
+            camera.position.x -= 100f * dt;
+        }
+
+        if (KeyListener.isKeyPressed(GLFW_KEY_UP)) {
+            camera.position.y += 100f * dt;
+        } else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN)) {
+            camera.position.y -= 100f * dt;
+        }
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
