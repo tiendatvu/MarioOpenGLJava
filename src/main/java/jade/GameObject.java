@@ -5,13 +5,26 @@ import components.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Describe everything in the scene depending on which COMPONENTS is added into it.
+ * i.e:
+ * - Just add a SpriteRender class -> GameObject is just a SPRITE on the screen
+ */
 public class GameObject {
     private String name;
     private List<Component> components;
+    public Transform transform;
 
     public GameObject(String name) {
         this.name = name;
         this.components = new ArrayList<>();
+        this.transform = new Transform();
+    }
+
+    public GameObject(String name, Transform transform) {
+        this.name = name;
+        this.components = new ArrayList<>();
+        this.transform = transform;
     }
 
     // Get the component with passed-in class
