@@ -17,28 +17,59 @@ public class LevelEditorScene extends Scene {
         // init the position of the camera
         this.camera = new Camera(new Vector2f(-250, 0));
 
-        int xOffset = 10;
-        int yOffset = 10;
+        float xOffset = 0;
+        float xDelta = 60;
+        GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj1.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage.png")));
+        this.addGameObjectToScene(obj1);
+        xOffset += xDelta;
 
-        float totalWidth = (float)(600 - xOffset * 2);
-        float totalHeight = (float)(300 - yOffset * 2);
-        float sizeX = totalWidth / 100.0f;
-        float sizeY = totalHeight / 100.0f;
-        float padding = 3;
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj2.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage2.png")));
+        this.addGameObjectToScene(obj2);
+        xOffset += xDelta;
 
-        int maxX = 100;
-        int maxY = 100;
-        for (int x = 0; x < maxX; x++) {
-            for (int y = 0; y < maxY; y++) {
-                float xPos = xOffset + (x * sizeX) + (padding * x);
-                float yPos = yOffset + (y * sizeY) + (padding * y);
-                GameObject go = new GameObject("Obj" + x + "" + y, new Transform(new Vector2f(xPos, yPos), new Vector2f(sizeX, sizeY)));
-                // Create sprite color based on its position
-                // Game object now is just a colored sprite
-                go.addComponent(new SpriteRenderer(new Vector4f(xPos / totalWidth, yPos / totalHeight, 1, 1)));
-                this.addGameObjectToScene(go);
-            }
-        }
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj3.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage3.png")));
+        this.addGameObjectToScene(obj3);
+        xOffset += xDelta;
+
+        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj4.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage4.png")));
+        this.addGameObjectToScene(obj4);
+        xOffset += xDelta;
+
+        GameObject obj5 = new GameObject("Object 5", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj5.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage5.png")));
+        this.addGameObjectToScene(obj5);
+        xOffset += xDelta;
+
+        GameObject obj6 = new GameObject("Object 6", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj6.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage6.png")));
+        this.addGameObjectToScene(obj6);
+        xOffset += xDelta;
+
+        GameObject obj7 = new GameObject("Object 7", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj7.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage7.png")));
+        this.addGameObjectToScene(obj7);
+        xOffset += xDelta;
+
+        // TODO: when the number of textured loaded is exceeded from the length of texslot
+        //       -> need to render a new batch to add a new texture into it
+        //       Here, from the obj8, the texture is not loaded
+        GameObject obj8 = new GameObject("Object 8", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj8.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage8.png")));
+        this.addGameObjectToScene(obj8);
+        xOffset += xDelta;
+
+        GameObject obj9 = new GameObject("Object 9", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj9.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage9.png")));
+        this.addGameObjectToScene(obj9);
+        xOffset += xDelta;
+
+        GameObject obj10 = new GameObject("Object 10", new Transform(new Vector2f(xOffset, 0), new Vector2f(50, 50)));
+        obj10.addComponent(new SpriteRenderer(AssetPool.getTexture("assets/images/testImage10.png")));
+        this.addGameObjectToScene(obj10);
 
         loadResources();
     }

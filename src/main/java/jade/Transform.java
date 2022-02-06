@@ -24,6 +24,11 @@ public class Transform {
         init(position, new Vector2f());
     }
 
+    /**
+     *
+     * @param position original position of the vertex (usually the bottom-left of a QUAD)
+     * @param scale EDGE SIZE of the QUAD
+     */
     public Transform(Vector2f position, Vector2f scale) {
         init(position, scale);
     }
