@@ -150,6 +150,9 @@ public class RenderBatch {
             glActiveTexture(GL_TEXTURE0 + i + 1);
             textures.get(i).bind();
         }
+        // Because texture is bound with the (GL_TEXTURE0 + i + 1),
+        // just pass the texture id from texSlots array into shader.
+        // This should automatically load the texture
         shader.uploadIntArray("uTextures", texSlots);
 
         glBindVertexArray(vaoID);
@@ -316,5 +319,13 @@ public class RenderBatch {
 
     public boolean hasRoom() {
         return this.hasRoom;
+    }
+
+    public boolean hasTextureRoom() {
+        return this.textures.size() < 8;
+    }
+
+    public boolean hasTexture(Texture tex) {
+        return this.textures.contains(tex);
     }
 }
