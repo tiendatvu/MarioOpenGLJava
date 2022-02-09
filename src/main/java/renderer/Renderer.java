@@ -4,6 +4,7 @@ import components.SpriteRenderer;
 import jade.GameObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Renderer {
@@ -30,7 +31,7 @@ public class Renderer {
         boolean added = false;
 
         for (RenderBatch batch : batches) {
-            if (batch.hasRoom()) {
+            if (batch.hasRoom() && batch.zIndex() == sprite.gameObject.zIndex()) {
                 Texture tex = sprite.getTexture();
                 if (tex == null || (batch.hasTexture(tex) || batch.hasTextureRoom())) {
                     batch.addSprite(sprite);
@@ -42,10 +43,11 @@ public class Renderer {
 
         // If there's no room for adding a new sprite -> create a new batch to add into
         if (!added) {
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.zIndex());
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(sprite);
+            Collections.sort(batches);
         }
     }
 
