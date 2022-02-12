@@ -4,6 +4,8 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import java.awt.event.WindowListener;
+
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -80,6 +82,12 @@ public class Window {
         glfwSetErrorCallback(null).free();
     }
 
+    private static void window_size_callback(long window, int newWidth, int newHeight)
+    {
+        Window.setWidth(newWidth);
+        Window.setHeight(newHeight);
+    }
+
     public void init() {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
@@ -105,10 +113,14 @@ public class Window {
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
+        // TODO: Still cannot use ImGui without resizing the window size
+        //       Investigate on this later
         glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
             Window.setWidth(newWidth);
             Window.setHeight(newHeight);
         });
+        //glfwSetWindowSizeCallback(glfwWindow, Window::window_size_callback);
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
