@@ -1,5 +1,6 @@
 package jade;
 
+import imgui.ImGui;
 import renderer.Renderer;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public abstract class Scene {
     protected Camera camera;
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
+    protected GameObject activeGameObject = null;
 
     public Scene() {
 
@@ -45,5 +47,25 @@ public abstract class Scene {
 
     public Camera camera() {
         return this.camera;
+    }
+
+    /**
+     * Display an inspector for an element on the scene
+     */
+    public void sceneImgui() {
+        if (activeGameObject != null) {
+            ImGui.begin("sceneImgui Inspector");
+            activeGameObject.imgui();
+            ImGui.end();
+        }
+
+        imgui();
+    }
+
+    /**
+     * Should be overridden in the implemented Scene
+     */
+    public void imgui() {
+
     }
 }

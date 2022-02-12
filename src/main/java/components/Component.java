@@ -14,6 +14,12 @@ public abstract class Component {
 
     }
 
-    // have to implement in implementation classes
-    public abstract void update(float dt);
+    // override if needed
+    public void update(float dt) {
+
+    }
+
+    public void imgui() {
+
+    }
 }
