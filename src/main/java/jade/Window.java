@@ -8,6 +8,7 @@ import java.awt.event.WindowListener;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -116,6 +117,7 @@ public class Window {
 
         // TODO: Still cannot use ImGui without resizing the window size
         //       Investigate on this later
+
         glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
             Window.setWidth(newWidth);
             Window.setHeight(newHeight);
