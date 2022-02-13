@@ -12,7 +12,7 @@ public class SpriteRenderer extends Component {
 
     // properties not needed to serialized -> add transient modifier
     private transient Transform lastTransform;
-    private transient boolean isDirty = false;
+    private transient boolean isDirty = true;
 
 //    public SpriteRenderer(Vector4f color) {
 //        this.color = color;
