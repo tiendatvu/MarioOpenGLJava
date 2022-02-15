@@ -11,6 +11,16 @@ import java.lang.reflect.Modifier;
 // Like interface in c++. force implementation to do some abstract methods
 public abstract class Component {
     /**
+     * Global Id System for all the components on the scene
+     */
+    private static int ID_COUNTER = 0;
+
+    /**
+     * The id of a specific component
+     */
+    private int uid = -1;
+
+    /**
      * - Show the component is currently belonged to which GameObject on the screen
      * - Different set of Components should form different type of GameObject
      * - GameObject is transient in the class Component because:
@@ -87,5 +97,27 @@ public abstract class Component {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * If the uid of the component has not been created
+     * -> init id = current_max_id + 1
+     */
+    public void generateId() {
+        if (this.uid == -1) {
+            this.uid = ID_COUNTER++;
+        }
+    }
+
+    public int uid() {
+        return this.uid;
+    }
+
+    /**
+     * Init the maximum value of the id counter
+     * @param maxId
+     */
+    public static void init(int maxId) {
+        ID_COUNTER = maxId;
     }
 }

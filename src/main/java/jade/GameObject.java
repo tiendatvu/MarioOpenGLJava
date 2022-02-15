@@ -11,6 +11,10 @@ import java.util.List;
  * - Just add a SpriteRender class -> GameObject is just a SPRITE on the screen
  */
 public class GameObject {
+
+    private static int ID_COUNTER = 0;
+    private int uid = -1;
+
     private String name;
     private List<Component> components;
     public Transform transform;
@@ -28,6 +32,8 @@ public class GameObject {
         this.zIndex = zIndex;
         this.components = new ArrayList<>();
         this.transform = transform;
+
+        this.uid = ID_COUNTER++;
     }
 
     // Get the component with passed-in class
@@ -58,12 +64,17 @@ public class GameObject {
     }
 
     public void addComponent(Component c) {
+        c.generateId();
         this.components.add(c);
         // assign back the game object using this component
         // -> different components could communicate:
         //    1. through some common state variables
         //    2. sending messages
         c.gameObject = this;
+    }
+
+    public List<Component> getAllComponents() {
+        return this.components;
     }
 
     public void update(float dt) {
@@ -86,5 +97,13 @@ public class GameObject {
 
     public int zIndex() {
         return this.zIndex;
+    }
+
+    public int uid() {
+        return this.uid;
+    }
+
+    public static void init(int maxId) {
+        ID_COUNTER = maxId;
     }
 }

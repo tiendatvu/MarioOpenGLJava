@@ -1,14 +1,11 @@
-package jade;
+package scenes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import components.Rigidbody;
-import components.Sprite;
-import components.SpriteRenderer;
-import components.Spritesheet;
+import components.*;
 import imgui.ImGui;
 import imgui.ImVec2;
-import org.joml.Vector2d;
+import jade.*;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import util.AssetPool;
@@ -20,6 +17,8 @@ public class LevelEditorScene extends Scene {
     private GameObject obj1;
     private Spritesheet sprites;
     SpriteRenderer obj1Sprite;
+
+    MouseControls mouseControls = new MouseControls();
 
     public LevelEditorScene() {
     }
@@ -80,17 +79,19 @@ public class LevelEditorScene extends Scene {
 //        System.out.println("dt: " + dt);
 //        System.out.println("FPS: " + (1.0 / dt));
 
-        if (KeyListener.isKeyPressed(GLFW_KEY_RIGHT)) {
-            camera.position.x += 100f * dt;
-        } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT)) {
-            camera.position.x -= 100f * dt;
-        }
+        mouseControls.update(dt);
 
-        if (KeyListener.isKeyPressed(GLFW_KEY_UP)) {
-            camera.position.y += 100f * dt;
-        } else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN)) {
-            camera.position.y -= 100f * dt;
-        }
+//        if (KeyListener.isKeyPressed(GLFW_KEY_RIGHT)) {
+//            camera.position.x += 100f * dt;
+//        } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT)) {
+//            camera.position.x -= 100f * dt;
+//        }
+//
+//        if (KeyListener.isKeyPressed(GLFW_KEY_UP)) {
+//            camera.position.y += 100f * dt;
+//        } else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN)) {
+//            camera.position.y -= 100f * dt;
+//        }
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
@@ -117,15 +118,22 @@ public class LevelEditorScene extends Scene {
         float windowX2 = windowPos.x + windowSize.x;
         for (int i = 0; i < sprites.size(); i++) {
             Sprite sprite = sprites.getSprite(i);
-            float spriteWidth = sprite.getWidth() * 4; // width displayed on the screen
-            float spriteHeight = sprite.getHeight() * 4; // height displayed on the screen
+            float scale = 2.0f;
+            float spriteWidth = sprite.getWidth() * scale; // width displayed on the screen
+            float spriteHeight = sprite.getHeight() * scale; // height displayed on the screen
             int id = sprite.getTexId();
             Vector2f[] texCoords = sprite.getTexCoords();
 
             ImGui.pushID(i);
+            // TODO:
+            //  try different texCoords composition
+            //  1. texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y -> correct
+            //  2. texCoords[0].x, texCoords[0].y, texCoords[2].x, texCoords[2].y -> flip
+            //  and the getOrthoY() in the MouseListener
             if (ImGui.imageButton(id, spriteWidth, spriteHeight,
                     texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                System.out.println("Button " + i + " clicked");
+                GameObject object = Prefabs.generateSpriteObject(sprite, spriteWidth, spriteHeight);
+                mouseControls.pickupObject(object);
             }
             ImGui.popID();
 
