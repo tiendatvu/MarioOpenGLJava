@@ -23,6 +23,7 @@ public abstract class Scene {
     protected Camera camera;
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
+    // Show what GameObject is being modified
     protected GameObject activeGameObject = null;
     protected boolean levelLoaded = false;
 

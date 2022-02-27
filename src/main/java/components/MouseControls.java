@@ -3,6 +3,7 @@ package components;
 import jade.GameObject;
 import jade.MouseListener;
 import jade.Window;
+import util.Settings;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
@@ -35,11 +36,15 @@ public class MouseControls extends Component {
     @Override
     public void update(float dt) {
         if (holdingObject != null) {
-            // As we known for this situation, each sprite size is (16, 16)
-            // (0, 0) is bottom left of a sprite
-            // (-16, -16) to get to the middle area of the sprite after scaling the sprite
-            holdingObject.transform.position.x = MouseListener.getOrthoX() - 16;
-            holdingObject.transform.position.y = MouseListener.getOrthoY() - 16;
+            // Snap the position of the object picked into grid line
+            holdingObject.transform.position.x = MouseListener.getOrthoX();
+            holdingObject.transform.position.y = MouseListener.getOrthoY();
+            // - Get the number of the grid line the object should be placed in, based on the mouse position
+            // (int)(holdingObject.transform.position.x / Settings.GRID_WIDTH)
+            // - Specify the position in the WORLD coordinates
+            // (int)(holdingObject.transform.position.x / Settings.GRID_WIDTH) * Settings.GRID_WIDTH:
+            holdingObject.transform.position.x = (int)(holdingObject.transform.position.x / Settings.GRID_WIDTH) * Settings.GRID_WIDTH;
+            holdingObject.transform.position.y = (int)(holdingObject.transform.position.y / Settings.GRID_HEIGHT) * Settings.GRID_HEIGHT;
 
             if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
                 place();
