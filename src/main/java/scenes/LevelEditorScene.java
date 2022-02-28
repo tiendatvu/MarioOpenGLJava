@@ -100,12 +100,12 @@ public class LevelEditorScene extends Scene {
 
         levelEditorStuff.update(dt);
 
-        DebugDraw.addBox2D(new Vector2f(200, 200), new Vector2f(63, 32), angle, new Vector3f(0, 1, 0));
-        angle += 40 * dt;
-
-        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(0, 1, 0), 1);
-        x += 50.0f * dt;
-        y += 50.0f * dt;
+//        DebugDraw.addBox2D(new Vector2f(200, 200), new Vector2f(63, 32), angle, new Vector3f(0, 1, 0));
+//        angle += 40 * dt;
+//
+//        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(0, 1, 0), 1);
+//        x += 50.0f * dt;
+//        y += 50.0f * dt;
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);

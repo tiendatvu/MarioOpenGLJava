@@ -205,7 +205,9 @@ public class RenderBatch implements Comparable<RenderBatch> {
         int texId = 0;
         if (sprite.getTexture() != null) {
             for (int i = 0; i < textures.size(); i++) {
-                if (textures.get(i) == sprite.getTexture()) {
+                // use operator == : compare addresses of the actual objects
+                // use function equals: compare the actual objects
+                if (textures.get(i).equals(sprite.getTexture())) {
                     texId = i  + 1;
                     break;
                 }
