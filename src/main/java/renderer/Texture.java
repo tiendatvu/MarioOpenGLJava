@@ -30,6 +30,12 @@ public class Texture {
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
 
+        // In this case, the texture in the file is 16x16.
+        // but on the displaying screen (or part of the screen), the displayed size != 16x16
+        // => This should determine what we should do if the texture is bigger or smaller than it is
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
         // Because the filepath is current nonsense, we don't have any actual data
         // Just allocate space (for an array) to store the texture later
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height,

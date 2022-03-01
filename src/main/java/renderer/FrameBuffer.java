@@ -2,6 +2,11 @@ package renderer;
 
 import static org.lwjgl.opengl.GL30.*;
 
+/**
+ * The class should be treated as a texture
+ * Its texture io could be passed into a ImGui to display on a view port
+ * Look at GameViewWindow
+ */
 public class FrameBuffer {
     private int fboID = 0;
     private Texture texture = null;
