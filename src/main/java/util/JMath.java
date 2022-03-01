@@ -20,8 +20,7 @@ public class JMath {
         float cos = (float)Math.cos(Math.toRadians(angleDeg));
         float sin = (float)Math.sin(Math.toRadians(angleDeg));
 
-        // TODO: tìm ra cách giải phần toán này
-        //       học lại: lượng giác, đại số, giải tích, hình học không gian
+        // TODO: Solve this math (dai so, luong giac, toan roi tac, giai tich...)
         float xPrime = (x * cos) - (y * sin);
         float yPrime = (x * sin) + (y * cos);
 

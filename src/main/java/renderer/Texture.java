@@ -9,12 +9,13 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 
 public class Texture {
+    // This should be the same for 1 texture, not depend on the restart
     private String filePath;
-    private int texID;
+    // the texture id could be changed from different restarts
+    // -> it would be non-sense if we store texture id, and base on that to compare texture
+    private transient int texID;
     private int width, height;
 
-//    public Texture(String filePath) {
-//    }
 
     public Texture() {
         this.texID = -1;

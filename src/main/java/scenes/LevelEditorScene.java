@@ -35,7 +35,9 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f(-250, 0));
         sprites = AssetPool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
         if (this.levelLoaded) {
-            this.activeGameObject = gameObjects.get(0);
+            if (gameObjects.size() > 0) {
+                this.activeGameObject = gameObjects.get(0);
+            }
             return;
         }
 
@@ -72,11 +74,23 @@ public class LevelEditorScene extends Scene {
         // Load to init/compile the shader files
         AssetPool.getShader("assets/shaders/default.glsl");
 
-        // TODO: FIX TEXTURE SAVE SYSTEM TO USE PATH INSTEAD OF ID
         AssetPool.addSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png",
                                  new Spritesheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),
                                  16, 16, 81, 0));
         AssetPool.getTexture("assets/images/blendImage2.png");
+
+        // The variable texID (Texture Id) inside Texture class is set to transient
+        // The system cannot save and load the texID each restart time.
+        // Each sprite has its own file path to load the texture based on texCoords (coordinates)
+        // -> Use AssetPool to [Create new texture/Load existing texture] by file path
+        for (GameObject g : gameObjects) {
+            if (g.getComponent(SpriteRenderer.class) != null) {
+                SpriteRenderer spr = g.getComponent(SpriteRenderer.class);
+                if (spr.getTexture() != null) {
+                    spr.setTexture(AssetPool.getTexture(spr.getTexture().getFilePath()));
+                }
+            }
+        }
     }
 
     float t = 0.0f;

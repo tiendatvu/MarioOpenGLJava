@@ -61,7 +61,7 @@ public class Window {
     }
 
     // window can only be created by calling this function
-    // singleton partern
+    // singleton pattern
     public static Window get() {
         if (Window.window == null) {
             Window.window = new Window();
@@ -173,7 +173,7 @@ public class Window {
 
             // in the range of 2 functions: bind() and unbind()
             // all the data is stored into a buffer which is off-screen
-            this.framebuffer.bind();
+//            this.framebuffer.bind();
             if (dt >= 0) {
                 DebugDraw.draw();
                 currentScene.update(dt);
