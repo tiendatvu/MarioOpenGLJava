@@ -3,9 +3,13 @@ package editor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
+import jade.MouseListener;
 import jade.Window;
+import org.joml.Vector2f;
 
 public class GameViewWindow {
+
+    private static float leftX, rightX, topY, bottomY;
 
     public static void imgui() {
         // Open an ImGui window
@@ -15,7 +19,28 @@ public class GameViewWindow {
         ImVec2 windowSize = getLargestSizeForViewport();
         ImVec2 windowPos = getCenteredPositionForViewport(windowSize);
 
-        ImGui.setCursorPos(windowPos.x, windowPos.y); // Draw the next thing at this position
+        // Draw the ImGui window at this position
+        // Cursor position in window coordinates (relative to window position)
+        // (Coordinates on the region of game view port only)
+        ImGui.setCursorPos(windowPos.x, windowPos.y);
+
+        ImVec2 topLeft = new ImVec2();
+
+        // Cursor position in ABSOLUTE screen coordinates [0..io.DisplaySize]
+        // (Coordinates on the out most screen)
+        ImGui.getCursorScreenPos(topLeft);
+        topLeft.x -= ImGui.getScrollX();
+        topLeft.y -= ImGui.getScrollY();
+//        System.out.println("windowPos: " + windowPos);
+//        System.out.println("windowSize: " + windowSize);
+//        System.out.println("topLeft: " + topLeft);
+
+        // Assign the absolute coordinates of viewport on the main screen
+        leftX = topLeft.x;
+        bottomY = topLeft.y;
+        rightX = topLeft.x + windowSize.x;
+        topY = topLeft.y + windowSize.y;
+
         int textureId = Window.getFramebuffer().getTextureId();
         // Pass
         // - the framebuffer with its texture id (consider each frame buffer as a texture)
@@ -23,8 +48,17 @@ public class GameViewWindow {
         // - how to sample the texture: from (0, 1) top-left to (1, 0) bottom-right
         ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
 
+        // Set the properties to calculate the orthogonal/perspective coordinates
+        MouseListener.setGameViewportPos(new Vector2f(topLeft.x, topLeft.y));
+        MouseListener.setGameViewportSize(new Vector2f(windowSize.x, windowSize.y));
+
         // Close an ImGui window
         ImGui.end();
+    }
+
+    public static boolean getWantCaptureMouse() {
+        return MouseListener.getX() >= leftX && MouseListener.getX() <= rightX &&
+                MouseListener.getY() >= bottomY && MouseListener.getY() <= topY;
     }
 
     private static ImVec2 getLargestSizeForViewport() {
