@@ -106,8 +106,33 @@ public class MouseListener {
         }
     }
 
+    /**
+     * Get the current position of mouse inside of the Game Viewport (GV)
+     * The Game Viewport is a small portion on the whole screen
+     * This functions is called when the mouse position is inside of the GV
+     * @return
+     */
+    public static float getScreenX() {
+        // Get the relative position of the mouse cursor when the it is inside the GV
+        float currentX = getX() - get().gameViewportPos.x;
+        // Because the framebuffer loading for the GV is set to Window.Size,
+        // then it would be shrunk down to the size of the actual GV.
+        // If we want to consider any pixel inside of the GV,
+        // we should convert the coordinates back to the Window.Size
+        currentX = (currentX / get().gameViewportSize.x) * Window.getWidth();
+        return currentX;
+    }
+
+    public static float getScreenY() {
+        float currentY = getY() - get().gameViewportPos.y;
+        currentY = Window.getHeight() - ((currentY / get().gameViewportSize.y) * Window.getHeight());
+        return currentY;
+    }
+
     public static float getOrthoX() {
         // Consider x coordinate inside of the game view port
+        // - before:
+        // currentX = getX();
         float currentX = getX() - get().gameViewportPos.x;
         // Normalize the coordinate
         // - before: normalize by the whole display window width
