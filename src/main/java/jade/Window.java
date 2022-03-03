@@ -1,5 +1,6 @@
 package jade;
 
+import org.joml.Vector2f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -149,12 +150,13 @@ public class Window {
         // Enable blending and use the rule to get the blending values
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-        this.imguiLayer = new ImGuiLayer(glfwWindow);
-        this.imguiLayer.initImGui();
 
         this.framebuffer = new FrameBuffer(get().width, get().height);
         this.pickingTexture = new PickingTexture(get().width, get().height);
         glViewport(0, 0, get().width, get().height);
+
+        this.imguiLayer = new ImGuiLayer(glfwWindow, pickingTexture);
+        this.imguiLayer.initImGui();
 
         // the init scene of Window
         Window.changeScene(0);
@@ -182,13 +184,6 @@ public class Window {
 
             Renderer.bindShader(pickingShader);
             currentScene.render();
-
-            if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-                int x = (int)MouseListener.getScreenX();
-                int y = (int)MouseListener.getScreenY();
-
-                System.out.println(pickingTexture.readPixel(x, y));
-            }
 
             pickingTexture.disableWriting(); // disable writing for safety
             glEnable(GL_BLEND);
