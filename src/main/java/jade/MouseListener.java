@@ -63,6 +63,9 @@ public class MouseListener {
         get().scrollY = yOffset;
     }
 
+    /**
+     * Reset the scroll value/position value at each end of a loop in Window
+     */
     public static void endFrame() {
         get().scrollX = 0;
         get().scrollY = 0;
@@ -129,6 +132,9 @@ public class MouseListener {
         return currentY;
     }
 
+    /**
+     * @return The mouse position.x in world coordinates
+     */
     public static float getOrthoX() {
         // Consider x coordinate inside of the game view port
         // - before:
@@ -155,6 +161,9 @@ public class MouseListener {
         return currentX;
     }
 
+    /**
+     * @return The mouse position.y in world coordinates
+     */
     public static float getOrthoY() {
         float currentY = getY() - get().gameViewportPos.y;
         currentY = -((currentY / get().gameViewportSize.y) * 2.0f - 1.0f);

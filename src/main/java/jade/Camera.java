@@ -22,8 +22,8 @@ public class Camera {
         // set the matrix as identity matrix
         projectionMatrix.identity();
         // set the matrix as orthogonal projection matrix
-        //
         projectionMatrix.ortho(0.0f, projectionSize.x, 0.0f, projectionSize.y, 0.0f, 100.0f);
+        // Set the value from inverse Projection matrix to calculate the actual coordinates from NDC
         projectionMatrix.invert(inverseProjection);
     }
 

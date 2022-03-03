@@ -36,7 +36,7 @@ public class Window {
 
     private Window() {
         this.width = 1920;
-        this.height = 1080;
+        this.height = 1017;
         this.title = "Mario";
         r = 1;
         g = 1;
@@ -122,10 +122,6 @@ public class Window {
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
-
-        // TODO: Still cannot use ImGui without resizing the window size
-        //       Investigate on this later
-
         glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
             Window.setWidth(newWidth);
             Window.setHeight(newHeight);
@@ -244,6 +240,6 @@ public class Window {
     }
 
     public static float getTargetAspectRatio() {
-        return 16.0f / 9.0f;
+        return (float)get().width / get().height;
     }
 }
