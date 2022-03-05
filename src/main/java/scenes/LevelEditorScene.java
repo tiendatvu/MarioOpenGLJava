@@ -27,12 +27,14 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
+        // Init the camera (with default position, not loaded from ini file)
+        this.camera = new Camera(new Vector2f(-250, 0));
         levelEditorStuff.addComponent(new MouseControls());
         levelEditorStuff.addComponent(new GridLines());
+        levelEditorStuff.addComponent(new EditorCamera(this.camera));
 
         loadResources();
 
-        this.camera = new Camera(new Vector2f(-250, 0));
         sprites = AssetPool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
 
 //        obj1 = new GameObject("Object 1",
@@ -107,6 +109,7 @@ public class LevelEditorScene extends Scene {
         }
 
         levelEditorStuff.update(dt);
+        this.camera.adjustProjection();
 
 //        DebugDraw.addBox2D(new Vector2f(200, 200), new Vector2f(63, 32), angle, new Vector3f(0, 1, 0));
 //        angle += 40 * dt;

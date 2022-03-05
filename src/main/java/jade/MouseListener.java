@@ -64,7 +64,10 @@ public class MouseListener {
     }
 
     /**
-     * Reset the scroll value/position value at each end of a loop in Window
+     * Reset the scroll value/position value at each end of a loop in Window.
+     * After each frame, we would set the current position as the original position.
+     * This could also prevent the floating error, when user stops scrolling/dragging
+     * but the scene still moves.
      */
     public static void endFrame() {
         get().scrollX = 0;
