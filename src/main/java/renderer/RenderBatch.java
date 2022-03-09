@@ -2,6 +2,7 @@ package renderer;
 
 import components.SpriteRenderer;
 import jade.Window;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import util.AssetPool;
@@ -220,6 +221,17 @@ public class RenderBatch implements Comparable<RenderBatch> {
             }
         }
 
+        boolean isRotated = sprite.gameObject.transform.rotation != 0.0f;
+        Matrix4f transformMatrix = new Matrix4f().identity();
+        if (isRotated) {
+            transformMatrix.translate(sprite.gameObject.transform.position.x,
+                    sprite.gameObject.transform.position.y, 0.0f);
+            // Rotate by the z axis with the rotation angle
+            transformMatrix.rotate((float)Math.toRadians(sprite.gameObject.transform.rotation), 0, 0, 1);
+            transformMatrix.scale(sprite.gameObject.transform.scale.x,
+                    sprite.gameObject.transform.scale.y, 1);
+        }
+
         // Init the vertex to get the properties
         float xAdd = 1.0f;
         float yAdd = 1.0f;
@@ -235,6 +247,13 @@ public class RenderBatch implements Comparable<RenderBatch> {
                 yAdd = 1.0f;
             }
 
+            Vector4f currentPos = new Vector4f(
+                    sprite.gameObject.transform.position.x + (xAdd * sprite.gameObject.transform.scale.x),
+                    sprite.gameObject.transform.position.y + (yAdd * sprite.gameObject.transform.scale.y),
+                    0, 1);
+            if (isRotated) {
+                currentPos = new Vector4f(xAdd, yAdd, 0, 1).mul(transformMatrix);
+            }
             // Remember, we are describe a passed-in vertex array like the followings
             // Vertex
             // ======
@@ -244,8 +263,8 @@ public class RenderBatch implements Comparable<RenderBatch> {
 
             // Load position
             // Get the actual position of a vertex by adding scale (edge-size) to the original position
-            vertices[offset + 0] = sprite.gameObject.transform.position.x + (xAdd * sprite.gameObject.transform.scale.x); // x position
-            vertices[offset + 1] = sprite.gameObject.transform.position.y + (yAdd * sprite.gameObject.transform.scale.y); // y position
+            vertices[offset + 0] = currentPos.x; // x position
+            vertices[offset + 1] = currentPos.y; // y position
 
             // Load color
             vertices[offset + 2] = color.x;

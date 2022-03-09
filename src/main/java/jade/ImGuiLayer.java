@@ -234,6 +234,9 @@ public class ImGuiLayer {
         ImGui.destroyContext();
     }
 
+    /**
+     * Create docking
+     */
     private void setupDockSpace() {
         int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
 
@@ -250,9 +253,13 @@ public class ImGuiLayer {
 
         // ImGui.begin() must be closed with ImGui.end();
         ImGui.begin("Dockspace Demo", new ImBoolean(true), windowFlags);
-        ImGui.popStyleVar(2);
+        ImGui.popStyleVar(2); // because of pushStyleVar twice above
 
         // Dockspace
         ImGui.dockSpace(ImGui.getID("Dockspace"));
+    }
+
+    public PropertiesWindow getPropertiesWindow() {
+        return this.propertiesWindow;
     }
 }

@@ -17,6 +17,10 @@ public class Transform {
      * EDGE SIZE of the QUAD
      */
     public Vector2f scale;
+    /**
+     * Rotation of the sprite
+     */
+    public float rotation = 0.0f;
 
     public Transform() {
         init(new Vector2f(), new Vector2f());

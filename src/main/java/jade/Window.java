@@ -243,4 +243,8 @@ public class Window {
     public static float getTargetAspectRatio() {
         return (float)get().width / get().height;
     }
+
+    public static ImGuiLayer getImGuiLayer() {
+        return get().imguiLayer;
+    }
 }

@@ -9,9 +9,9 @@ import java.util.Vector;
 public class Prefabs {
     /**
      * Generate a GameObject from the blocked selected
-     * @param sprite
-     * @param sizeX
-     * @param sizeY
+     * @param sprite displayed image
+     * @param sizeX size x to be displayed on screen
+     * @param sizeY size y to be displayed on screen
      * @return
      */
     public static GameObject generateSpriteObject(Sprite sprite, float sizeX, float sizeY) {
