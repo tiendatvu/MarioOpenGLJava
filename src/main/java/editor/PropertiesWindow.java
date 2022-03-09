@@ -1,5 +1,6 @@
 package editor;
 
+import components.NonPickable;
 import imgui.ImGui;
 import jade.GameObject;
 import jade.MouseListener;
@@ -31,7 +32,14 @@ public class PropertiesWindow {
             int x = (int)MouseListener.getScreenX();
             int y = (int)MouseListener.getScreenY();
             int gameObjectId = pickingTexture.readPixel(x, y);
-            activeGameObject = currentScene.getGameObject(gameObjectId);
+            GameObject pickedObj = currentScene.getGameObject(gameObjectId);
+            if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null) {
+                // If users click on any GameObject, check if it has NonPickable component
+                activeGameObject = pickedObj;
+            } else if (pickedObj == null && !MouseListener.isDragging()) {
+                // TODO: check the condition why (not pick GO and not dragging mouse)
+                activeGameObject = null;
+            }
             this.debounce = 0.2f;
         }
     }
