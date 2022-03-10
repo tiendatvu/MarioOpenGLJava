@@ -30,6 +30,7 @@ public class Gizmo extends Component {
     // The active game object showing the Gizmos
     protected GameObject activeGameObject = null;
 
+    // Offset from the origin points for the arrows
     private Vector2f xAxisOffset = new Vector2f(64, -5);
     private Vector2f yAxisOffset = new Vector2f(16, 61);
 
@@ -126,6 +127,10 @@ public class Gizmo extends Component {
         this.yAxisSprite.setColor(new Vector4f(0, 0, 0, 0));
     }
 
+    /**
+     * Check if the mouse is hovering inside of the horizontal axis
+     * @return
+     */
     private boolean checkXHoverState() {
         Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
         // Because the xAxis is rotated 90, the origin of the arrow is its pointer
@@ -137,10 +142,14 @@ public class Gizmo extends Component {
             return true;
         }
 
-        xAxisSprite.setColor(xAxisColorHover);
-        return true;
+        xAxisSprite.setColor(xAxisColor);
+        return false;
     }
 
+    /**
+     * Check if the mouse is hovering inside of the vertical axis
+     * @return
+     */
     private boolean checkYHoverState() {
         Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
         // Because the xAxis is rotated 180

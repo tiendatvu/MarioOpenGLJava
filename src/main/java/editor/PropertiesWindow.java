@@ -37,7 +37,8 @@ public class PropertiesWindow {
                 // If users click on any GameObject, check if it has NonPickable component
                 activeGameObject = pickedObj;
             } else if (pickedObj == null && !MouseListener.isDragging()) {
-                // TODO: check the condition why (not pick GO and not dragging mouse)
+                // if the mouse button is clicking on nothing (no object)
+                // or it is not dragged -> set the active GameObject as null
                 activeGameObject = null;
             }
             this.debounce = 0.2f;

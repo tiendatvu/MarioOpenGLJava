@@ -9,6 +9,10 @@ public class ScaleGizmo extends Gizmo {
         super(scaleSprite, propertiesWindow);
     }
 
+    /**
+     * Update the scaling of the active game object
+     * @param dt
+     */
     @Override
     public void update(float dt) {
         if (activeGameObject != null) {

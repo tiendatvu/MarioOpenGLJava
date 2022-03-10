@@ -1,20 +1,18 @@
 package components;
 
 import editor.PropertiesWindow;
-import jade.GameObject;
 import jade.MouseListener;
-import jade.Prefabs;
-import jade.Window;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
-
-import java.util.Vector;
 
 public class TranslateGizmo extends Gizmo {
     public TranslateGizmo(Sprite arrowSprite, PropertiesWindow propertiesWindow) {
+        // Use the Constructor of the parent
         super(arrowSprite, propertiesWindow);
     }
 
+    /**
+     * Update the translating(position) of the active game object
+     * @param dt
+     */
     @Override
     public void update(float dt) {
         if (activeGameObject != null) {

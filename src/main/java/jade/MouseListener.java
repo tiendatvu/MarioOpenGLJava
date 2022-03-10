@@ -15,6 +15,7 @@ public class MouseListener {
     private boolean mouseButtonPressed[] = new boolean[9];
     private boolean isDragging;
 
+    // hold the number of mouse buttons clicked down at the current moment
     private int mouseButtonDown = 0;
 
     private Vector2f gameViewportPos = new Vector2f();
@@ -59,13 +60,17 @@ public class MouseListener {
 
     public static void mouseButtonCallback(long window, int button, int action, int mods) {
         if (action == GLFW_PRESS) {
-            get().mouseButtonDown++; // add 1 to counter when a mouse button is pressed
+            // add 1 to counter when a mouse button is pressed
+            get().mouseButtonDown++;
+
             if (button < get().mouseButtonPressed.length) {
                 get().mouseButtonPressed[button] = true;
             }
         } else if (action == GLFW_RELEASE)
         {
-            get().mouseButtonDown--; // minus 1 to counter when a mouse button is pressed
+            // minus 1 to counter when a mouse button is pressed
+            get().mouseButtonDown--;
+
             if (button < get().mouseButtonPressed.length) {
                 get().mouseButtonPressed[button] = false;
                 get().isDragging = false;
@@ -182,7 +187,7 @@ public class MouseListener {
     }
 
     /**
-     * Calculate the world coordinates of the X
+     * Calculate mouse position in world coordinates (on the X axis)
      */
     private static void calcOrthoX() {
         // Consider x coordinate inside of the game view port
@@ -217,6 +222,9 @@ public class MouseListener {
         return (float)get().worldY;
     }
 
+    /**
+     * Calculate mouse position in world coordinates (on the Y axis)
+     */
     private static void calcOrthoY() {
         float currentY = getY() - get().gameViewportPos.y;
         currentY = -((currentY / get().gameViewportSize.y) * 2.0f - 1.0f);
