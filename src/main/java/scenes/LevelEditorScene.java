@@ -20,7 +20,7 @@ public class LevelEditorScene extends Scene {
     private Spritesheet sprites;
     SpriteRenderer obj1Sprite;
 
-    GameObject levelEditorStuff = new GameObject("LevelEditor", new Transform(new Vector2f()), 0);
+    GameObject levelEditorStuff = this.createGameObject("LevelEditor");
 
     public LevelEditorScene() {
     }
@@ -36,9 +36,6 @@ public class LevelEditorScene extends Scene {
         levelEditorStuff.addComponent(new MouseControls());
         levelEditorStuff.addComponent(new GridLines());
         levelEditorStuff.addComponent(new EditorCamera(this.camera));
-        // get the sprite from the sprite sheet with its index: gizmos.getSprite(1)
-//        levelEditorStuff.addComponent(new TranslateGizmo(gizmos.getSprite(1),
-//                Window.getImGuiLayer().getPropertiesWindow()));
         levelEditorStuff.addComponent(new GizmoSystem((gizmos)));
 
         levelEditorStuff.start(); // Init components of the GameObject

@@ -26,13 +26,16 @@ public class Renderer {
     /**
      * Loop through existed batches -> check if any has room for a new sprite
      * -> add the sprite into it || create a new batch and then add the sprite into the new one.
+     *
+     * - Check if the existing batch still has room for a new sprite
+     * - Check if the existing batch still has the same zIndex with the new sprite
      * @param sprite
      */
     private void add(SpriteRenderer sprite) {
         boolean added = false;
 
         for (RenderBatch batch : batches) {
-            if (batch.hasRoom() && batch.zIndex() == sprite.gameObject.zIndex()) {
+            if (batch.hasRoom() && batch.zIndex() == sprite.gameObject.transform.zIndex) {
                 Texture tex = sprite.getTexture();
                 if (tex == null || (batch.hasTexture(tex) || batch.hasTextureRoom())) {
                     batch.addSprite(sprite);
@@ -44,7 +47,7 @@ public class Renderer {
 
         // If there's no room for adding a new sprite -> create a new batch to add into
         if (!added) {
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.zIndex());
+            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.transform.zIndex);
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(sprite);

@@ -377,6 +377,13 @@ public class RenderBatch implements Comparable<RenderBatch> {
         return this.zIndex;
     }
 
+    /**
+     * x == y return 0
+     * x < y  return < 0
+     * x > y  return > 0
+     * @param o
+     * @return
+     */
     @Override
     public int compareTo(RenderBatch o) {
         return Integer.compare(this.zIndex, o.zIndex());

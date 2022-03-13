@@ -8,6 +8,7 @@ import imgui.ImGui;
 import jade.Camera;
 import jade.GameObject;
 import jade.GameObjectDeserializer;
+import jade.Transform;
 import renderer.Renderer;
 
 import java.io.FileWriter;
@@ -75,6 +76,22 @@ public abstract class Scene {
      */
     public void imgui() {
 
+    }
+
+    /**
+     * Init a GameObject with just a name, transform component.
+     * @param name
+     * @return
+     */
+    public GameObject createGameObject(String name) {
+        GameObject go = new GameObject(name);
+        go.addComponent(new Transform());
+        // The Transform class is added to the component list
+        // -> To be stored (serialized) into file afterwards
+        // The property "transform" of the class GameObject is still not initialized
+        // -> Have to init to translate, scale, rotate the object
+        go.transform = go.getComponent(Transform.class); // Assign component to the reference
+        return go;
     }
 
     /**

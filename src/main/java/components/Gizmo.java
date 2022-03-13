@@ -66,8 +66,14 @@ public class Gizmo extends Component {
 
     @Override
     public void start() {
+        // init the rotation of x axis and y axis
         this.xAxisObject.transform.rotation = 90;
         this.yAxisObject.transform.rotation = 180;
+        // set the zIndex of axes. Pick up and place a new object (sprite) into the scene.
+        // This would help the X and Y axis placed front of the sprite
+        this.xAxisObject.transform.zIndex = 100;
+        this.yAxisObject.transform.zIndex = 100;
+        // Not save the axis into file
         this.xAxisObject.setNoSerialize();
         this.yAxisObject.setNoSerialize();
     }

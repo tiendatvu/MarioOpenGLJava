@@ -38,10 +38,10 @@ public class GizmoSystem extends Component {
             gameObject.getComponent(TranslateGizmo.class).setNotUsing();
             gameObject.getComponent(ScaleGizmo.class).setUsing();
         }
-        else {
-            gameObject.getComponent(TranslateGizmo.class).setNotUsing();
-            gameObject.getComponent(ScaleGizmo.class).setNotUsing();
-        }
+//        else {
+//            gameObject.getComponent(TranslateGizmo.class).setNotUsing();
+//            gameObject.getComponent(ScaleGizmo.class).setNotUsing();
+//        }
 
         if (KeyListener.isKeyPressed(GLFW_KEY_E)) {
             usingGizmo = 0;
