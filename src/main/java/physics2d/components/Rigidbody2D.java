@@ -7,12 +7,24 @@ import physics2d.enums.BodyType;
 
 public class Rigidbody2D extends Component {
     private Vector2f velocity = new Vector2f();
+    /**
+     * TODO: search google
+     */
     private float angularDamping = 0.8f;
+    /**
+     * TODO: search google
+     */
     private float linearDamping = 0.9f;
+    /**
+     * TODO: search google (khối lượng)
+     */
     private float mass = 0;
     private BodyType bodyType = BodyType.Dynamic;
 
     private boolean fixedRotation = false;
+    /**
+     * TODO: search google about continuous collision
+     */
     private boolean continuousCollision = true;
 
     private Body rawBody = null;

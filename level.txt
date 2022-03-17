@@ -7,8 +7,8 @@
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": 192.0,
-            "y": -32.0
+            "x": 306.9157,
+            "y": 210.84076
           },
           "scale": {
             "x": 32.0,
@@ -57,6 +57,33 @@
           },
           "uid": 19
         }
+      },
+      {
+        "type": "physics2d.components.CircleCollider",
+        "properties": {
+          "radius": 41.7,
+          "offset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "uid": 44
+        }
+      },
+      {
+        "type": "physics2d.components.Rigidbody2D",
+        "properties": {
+          "velocity": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "angularDamping": 0.8,
+          "linearDamping": 0.9,
+          "mass": 0.0,
+          "bodyType": "Dynamic",
+          "fixedRotation": false,
+          "continuousCollision": true,
+          "uid": 45
+        }
       }
     ],
     "doSerialization": true
@@ -69,8 +96,8 @@
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": 160.0,
-            "y": 256.0
+            "x": 165.42053,
+            "y": 246.32932
           },
           "scale": {
             "x": 32.0,
@@ -118,6 +145,130 @@
             ]
           },
           "uid": 21
+        }
+      }
+    ],
+    "doSerialization": true
+  },
+  {
+    "uid": 3,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "jade.Transform",
+        "properties": {
+          "position": {
+            "x": 928.0,
+            "y": -320.0
+          },
+          "scale": {
+            "x": 32.0,
+            "y": 32.0
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "uid": 40
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filePath": "assets/images/spritesheets/decorationsAndBlocks.png",
+              "width": 112,
+              "height": 192
+            },
+            "texCoords": [
+              {
+                "x": 0.42857143,
+                "y": 0.41666666
+              },
+              {
+                "x": 0.42857143,
+                "y": 0.33333334
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.33333334
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.41666666
+              }
+            ]
+          },
+          "uid": 41
+        }
+      }
+    ],
+    "doSerialization": true
+  },
+  {
+    "uid": 4,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "jade.Transform",
+        "properties": {
+          "position": {
+            "x": 415.55157,
+            "y": 303.1462
+          },
+          "scale": {
+            "x": 32.0,
+            "y": 32.0
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "uid": 42
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.62875515,
+            "y": 0.85409254,
+            "z": 0.048631586,
+            "w": 1.0
+          },
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filePath": "assets/images/spritesheets/decorationsAndBlocks.png",
+              "width": 112,
+              "height": 192
+            },
+            "texCoords": [
+              {
+                "x": 0.42857143,
+                "y": 0.41666666
+              },
+              {
+                "x": 0.42857143,
+                "y": 0.33333334
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.33333334
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.41666666
+              }
+            ]
+          },
+          "uid": 43
         }
       }
     ],

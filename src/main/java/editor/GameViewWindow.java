@@ -7,6 +7,9 @@ import jade.MouseListener;
 import jade.Window;
 import org.joml.Vector2f;
 
+/**
+ * The view just to edit GameObjects and play game
+ */
 public class GameViewWindow {
 
     private float leftX, rightX, topY, bottomY;
