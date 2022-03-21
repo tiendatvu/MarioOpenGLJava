@@ -30,6 +30,10 @@ public class Physics2D {
     private int velocityIterations = 8;
     private int positionIterations = 3;
 
+    /**
+     * Init the rigid body of the game object
+     * @param go
+     */
     public void add(GameObject go) {
         Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
         if (rb != null && rb.getRawBody() == null) {
@@ -78,6 +82,20 @@ public class Physics2D {
             Body body = this.world.createBody(bodyDef); // Add the body to the Box2D's engine
             rb.setRawBody(body);
             body.createFixture(shape, rb.getMass());
+        }
+    }
+
+    /**
+     * Destroy the object Body holding data of the RigidBody
+     * @param go
+     */
+    public void destroyGameObject(GameObject go) {
+        Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
+        if (rb != null) {
+            if (rb.getRawBody() != null) {
+                world.destroyBody(rb.getRawBody());
+                rb.setRawBody(null);
+            }
         }
     }
 

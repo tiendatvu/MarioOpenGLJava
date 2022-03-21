@@ -34,7 +34,7 @@ public class MouseControls extends Component {
      * @param dt
      */
     @Override
-    public void update(float dt) {
+    public void editorUpdate(float dt) {
         if (holdingObject != null) {
             // Snap the position of the object picked into grid line
             holdingObject.transform.position.x = MouseListener.getOrthoX();

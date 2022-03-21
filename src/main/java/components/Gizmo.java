@@ -80,6 +80,14 @@ public class Gizmo extends Component {
 
     @Override
     public void update(float dt) {
+        // TODO: why if using the Gizmo system, inactivate the objects in the scene
+        if (using) {
+            this.setInactive();
+        }
+    }
+
+    @Override
+    public void editorUpdate(float dt) {
         if (!using) return;
 
         // Get the current propertiesWindow JUST to get the active GameObject

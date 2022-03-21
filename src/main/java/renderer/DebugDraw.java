@@ -15,6 +15,10 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+/**
+ * Use list of lines to store data of shapes which would be drawn.
+ * The number of lines depends on the type of shape.
+ */
 public class DebugDraw {
     private static int MAX_LINES = 500;
 

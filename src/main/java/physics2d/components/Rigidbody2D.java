@@ -31,7 +31,7 @@ public class Rigidbody2D extends Component {
      * Hold the data sent from our engine to Box2D (3rd party Physics Engine)
      * and Receive the data sent back from the Box2D.
      */
-    private Body rawBody = null;
+    private transient Body rawBody = null;
 
     @Override
     public void update(float dt) {

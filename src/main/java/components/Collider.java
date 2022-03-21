@@ -9,7 +9,7 @@ public abstract class Collider extends Component {
      * draws box from the center of its.
      * Then it specifies all 4 vertices by add/minus half size of the box from the center.
      */
-    private Vector2f offset = new Vector2f();
+    protected Vector2f offset = new Vector2f();
 
     public Vector2f getOffset() {
         return this.offset;

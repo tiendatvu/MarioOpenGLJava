@@ -5,6 +5,9 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
 import jade.MouseListener;
 import jade.Window;
+import observers.EventSystem;
+import observers.events.Event;
+import observers.events.EventType;
 import org.joml.Vector2f;
 
 /**
@@ -13,11 +16,29 @@ import org.joml.Vector2f;
 public class GameViewWindow {
 
     private float leftX, rightX, topY, bottomY;
+    private boolean isPlaying = false;
 
     public void imgui() {
         // Open an ImGui window
         ImGui.begin("Game Viewport",
-                    ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+                    ImGuiWindowFlags.NoScrollbar |
+                            ImGuiWindowFlags.NoScrollWithMouse |
+                            ImGuiWindowFlags.MenuBar);
+
+        ImGui.beginMenuBar();
+        // Add the menu item to the menubar
+        // selected: true -> select the menu item
+        // enabled: true -> enable the menu item
+        // Here, if selected -> disable the menu item
+        if (ImGui.menuItem("Play", "", isPlaying, !isPlaying)) {
+            isPlaying = true;
+            EventSystem.notify(null, new Event(EventType.GameEngineStartPlay));
+        }
+        if (ImGui.menuItem("Stop", "", !isPlaying, isPlaying)) {
+            isPlaying = false;
+            EventSystem.notify(null, new Event(EventType.GameEngineStopPlay));
+        }
+        ImGui.endMenuBar();
 
         ImVec2 windowSize = getLargestSizeForViewport();
         ImVec2 windowPos = getCenteredPositionForViewport(windowSize);

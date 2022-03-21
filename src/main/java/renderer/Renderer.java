@@ -1,5 +1,6 @@
 package renderer;
 
+import components.Sprite;
 import components.SpriteRenderer;
 import jade.GameObject;
 
@@ -52,6 +53,15 @@ public class Renderer {
             batches.add(newBatch);
             newBatch.addSprite(sprite);
             Collections.sort(batches);
+        }
+    }
+
+    public void destroyGameObject(GameObject go) {
+        if (go.getComponent(SpriteRenderer.class) == null) return;
+        for (RenderBatch batch : batches) {
+            if (batch.destroyIfExists(go)) {
+                return;
+            }
         }
     }
 

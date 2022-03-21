@@ -10,9 +10,15 @@ import renderer.Texture;
 public class SpriteRenderer extends Component {
     private Vector4f color = new Vector4f(1, 1, 1, 1);
     private Sprite sprite = new Sprite();
-
-    // properties not needed to serialized -> add transient modifier
-    private transient Transform lastTransform;
+    /**
+     * the latest transformation of the sprite
+     */
+    private transient Transform lastTransform;// properties not needed to serialized -> add transient modifier
+    /**
+     * If the sprite has just transformed, updated the texture ...
+     * (changing any data)
+     * -> this flag would be set to true
+     */
     private transient boolean isDirty = true;
 
 //    public SpriteRenderer(Vector4f color) {
@@ -41,10 +47,22 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
+    public void editorUpdate(float dt) {
+        if (!this.lastTransform.equals(this.gameObject.transform)) {
+            this.gameObject.transform.copy(this.lastTransform);
+            this.isDirty = true;
+        }
+    }
+
+    @Override
     public void imgui() {
         if (JImGui.colorPicker4("Color Picker", this.color)) {
             this.isDirty = true;
         }
+    }
+
+    public void setDirty() {
+        this.isDirty = true;
     }
 
     public Vector4f getColor() {
@@ -79,6 +97,9 @@ public class SpriteRenderer extends Component {
         return this.isDirty;
     }
 
+    /**
+     * Apply the last transformation to the sprite, then clean the isDirty flag
+     */
     public void setClean() {
         this.isDirty = false;
     }

@@ -37,8 +37,19 @@ public abstract class Component {
 
     }
 
-    // override if needed
+    /**
+     * update the GamePlay scene
+     * @param dt
+     */
     public void update(float dt) {
+
+    }
+
+    /**
+     * update the dev/edit scene
+     * @param dt
+     */
+    public void editorUpdate(float dt) {
 
     }
 
@@ -104,6 +115,13 @@ public abstract class Component {
         if (this.uid == -1) {
             this.uid = ID_COUNTER++;
         }
+    }
+
+    /**
+     * Destroy objects in the scene
+     */
+    public void destroy() {
+
     }
 
     public int getUid() {
