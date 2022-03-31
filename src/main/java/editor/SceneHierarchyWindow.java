@@ -7,7 +7,7 @@ import jade.Window;
 
 import java.util.List;
 
-public class SceneHeirarchyWindow {
+public class SceneHierarchyWindow {
     public void imgui() {
         ImGui.begin("Scene Heirarchy");
 

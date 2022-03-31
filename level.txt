@@ -7,7 +7,7 @@
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": -248.0,
+            "x": -247.9303,
             "y": 1.0219297
           },
           "scale": {
@@ -98,13 +98,13 @@
   },
   {
     "uid": 1,
-    "name": "Sprite_Object_Gen",
+    "name": "Sprite Object 1",
     "components": [
       {
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": -247.8308,
+            "x": -247.78667,
             "y": 1.926329
           },
           "scale": {
@@ -201,7 +201,7 @@
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": -247.60248,
+            "x": -247.62106,
             "y": 0.9180121
           },
           "scale": {
