@@ -90,7 +90,7 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
             if (ImGui.imageButton(id, spriteWidth, spriteHeight,
                     texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
                 // 32 x 32 is the size of the grid on the screen
-                GameObject object = Prefabs.generateSpriteObject(sprite, 32, 32);
+                GameObject object = Prefabs.generateSpriteObject(sprite, 0.25f, 0.25f);
                 levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
             }
             ImGui.popID();

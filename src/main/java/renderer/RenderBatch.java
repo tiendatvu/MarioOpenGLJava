@@ -49,9 +49,11 @@ public class RenderBatch implements Comparable<RenderBatch> {
     private Shader shader;
     private int zIndex;
 
-    public RenderBatch(int maxBatchSize, int zIndex) {
-        this.zIndex = zIndex;
+    private Renderer renderer;
 
+    public RenderBatch(int maxBatchSize, int zIndex, Renderer renderer) {
+        this.renderer = renderer;
+        this.zIndex = zIndex;
         /*
           This is the old version. This code makes us
           shader = new Shader("assets/shaders/default.glsl");
@@ -154,6 +156,17 @@ public class RenderBatch implements Comparable<RenderBatch> {
                 spr.setClean();
                 reBufferData = true;
             }
+
+            // TODO: get better solution for this
+            // if the sprite has different zIndex
+            // -> update the batch where the sprite belongs to
+            if (spr.gameObject.transform.zIndex != this.zIndex) {
+                destroyIfExists(spr.gameObject);
+                // Add the sprite into renderer, then it would be automatically added into
+                // a batch having the same zIndex with it
+                renderer.add(spr.gameObject);
+                i--;
+            }
         }
 
         if (reBufferData) {
@@ -198,7 +211,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
         SpriteRenderer sprite = go.getComponent(SpriteRenderer.class);
         for (int i = 0; i < numSprites; i++) {
             if (sprites[i] == sprite) {
-                for (int j = i; i < numSprites - 1; j++) {
+                for (int j = i; j < numSprites - 1; j++) {
                     sprites[j] = sprites[j + 1];
                     //TODO: - check if not set to dirty, what will happen
                     //      - need to un-comment codde.
@@ -251,18 +264,22 @@ public class RenderBatch implements Comparable<RenderBatch> {
         }
 
         // Init the vertex to get the properties
-        float xAdd = 1.0f;
-        float yAdd = 1.0f;
+        // old: xAdd = 1 | 0;
+        //      yAdd = 1 | 0;
+        // -> rotate by the bottom left of the sprite
+        // new: rotate by the center of the sprite
+        float xAdd = 0.5f;
+        float yAdd = 0.5f;
         // + Loop through all 4 vertices of the sprite
         // + Loop through with the considered coordinates order like in the function SpriteRenderer.getTexCoords()
         // -> Add vertices with the appropriate properties
         for (int i = 0; i < 4; i++) {
             if (i == 1) {
-                yAdd = 0.0f;
+                yAdd = -0.5f;
             } else if (i == 2) {
-                xAdd = 0.0f;
+                xAdd = -0.5f;
             } else if (i == 3) {
-                yAdd = 1.0f;
+                yAdd = 0.5f;
             }
 
             Vector4f currentPos = new Vector4f(
