@@ -1,14 +1,14 @@
 [
   {
-    "uid": 5,
+    "uid": 7,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": 3.625,
-            "y": 1.375
+            "x": 3.375,
+            "y": 0.625
           },
           "scale": {
             "x": 0.25,
@@ -23,10 +23,10 @@
         "type": "components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 0.8,
-            "y": 0.8,
-            "z": 0.8,
-            "w": 0.5
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
           },
           "sprite": {
             "width": 16.0,
@@ -38,168 +38,24 @@
             },
             "texCoords": [
               {
+                "x": 0.5714286,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.5714286,
+                "y": 0.75
+              },
+              {
                 "x": 0.42857143,
-                "y": 0.9166667
+                "y": 0.75
               },
               {
                 "x": 0.42857143,
                 "y": 0.8333333
-              },
-              {
-                "x": 0.2857143,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.2857143,
-                "y": 0.9166667
               }
             ]
           },
           "uid": 20
-        }
-      },
-      {
-        "type": "components.NonPickable",
-        "properties": {
-          "uid": 21
-        }
-      }
-    ],
-    "doSerialization": true,
-    "isDead": false
-  },
-  {
-    "uid": 6,
-    "name": "Sprite_Object_Gen",
-    "components": [
-      {
-        "type": "jade.Transform",
-        "properties": {
-          "position": {
-            "x": 4.875,
-            "y": 1.375
-          },
-          "scale": {
-            "x": 0.25,
-            "y": 0.25
-          },
-          "rotation": 0.0,
-          "zIndex": 0,
-          "uid": 22
-        }
-      },
-      {
-        "type": "components.SpriteRenderer",
-        "properties": {
-          "color": {
-            "x": 0.8,
-            "y": 0.8,
-            "z": 0.8,
-            "w": 0.5
-          },
-          "sprite": {
-            "width": 16.0,
-            "height": 16.0,
-            "texture": {
-              "filePath": "assets/images/spritesheets/decorationsAndBlocks.png",
-              "width": 112,
-              "height": 192
-            },
-            "texCoords": [
-              {
-                "x": 0.5714286,
-                "y": 0.9166667
-              },
-              {
-                "x": 0.5714286,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.42857143,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.42857143,
-                "y": 0.9166667
-              }
-            ]
-          },
-          "uid": 23
-        }
-      },
-      {
-        "type": "components.NonPickable",
-        "properties": {
-          "uid": 24
-        }
-      }
-    ],
-    "doSerialization": true,
-    "isDead": false
-  },
-  {
-    "uid": 7,
-    "name": "Sprite_Object_Gen",
-    "components": [
-      {
-        "type": "jade.Transform",
-        "properties": {
-          "position": {
-            "x": 4.125,
-            "y": 0.875
-          },
-          "scale": {
-            "x": 0.25,
-            "y": 0.25
-          },
-          "rotation": 0.0,
-          "zIndex": 0,
-          "uid": 25
-        }
-      },
-      {
-        "type": "components.SpriteRenderer",
-        "properties": {
-          "color": {
-            "x": 0.8,
-            "y": 0.8,
-            "z": 0.8,
-            "w": 0.5
-          },
-          "sprite": {
-            "width": 16.0,
-            "height": 16.0,
-            "texture": {
-              "filePath": "assets/images/spritesheets/decorationsAndBlocks.png",
-              "width": 112,
-              "height": 192
-            },
-            "texCoords": [
-              {
-                "x": 0.14285715,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.14285715,
-                "y": 0.75
-              },
-              {
-                "x": 0.0,
-                "y": 0.75
-              },
-              {
-                "x": 0.0,
-                "y": 0.8333333
-              }
-            ]
-          },
-          "uid": 26
-        }
-      },
-      {
-        "type": "components.NonPickable",
-        "properties": {
-          "uid": 27
         }
       }
     ],

@@ -207,7 +207,8 @@ public class Window implements Observer {
             dt = endTime - beginTime;
             beginTime = endTime;
 
-            if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE)) {
+            if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE) &&
+                KeyListener.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
                 glfwSetWindowShouldClose(glfwWindow, true);
             }
         }

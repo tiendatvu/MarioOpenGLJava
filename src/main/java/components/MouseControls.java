@@ -34,20 +34,14 @@ public class MouseControls extends Component {
      * Release the pointer to the held object
      */
     public void place() {
-        this.holdingObject = null;
-    }
-
-    // TODO: use this for the next commit (adding state to the game engine)
-//    public void place() {
-//        this.holdingObject = null;
-//        GameObject newObj = holdingObject.copy();
+        GameObject newObj = holdingObject.copy();
 //        if (newObj.getComponent(StateMachine.class) != null) {
 //            newObj.getComponent(StateMachine.class).refreshTextures();
 //        }
-//        newObj.getComponent(SpriteRenderer.class).setColor(new Vector4f(1, 1, 1, 1));
-//        newObj.removeComponent(NonPickable.class);
-//        Window.getScene().addGameObjectToScene(newObj);
-//    }
+        newObj.getComponent(SpriteRenderer.class).setColor(new Vector4f(1, 1, 1, 1));
+        newObj.removeComponent(NonPickable.class);
+        Window.getScene().addGameObjectToScene(newObj);
+    }
 
     /**
      * - Update the position of the held object from time to time
