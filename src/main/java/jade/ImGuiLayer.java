@@ -30,14 +30,14 @@ public class ImGuiLayer {
     private GameViewWindow gameViewWindow;
     private PropertiesWindow propertiesWindow;
     private MenuBar menuBar;
-    private SceneHierarchyWindow sceneHeirarchyWindow;
+    private SceneHierarchyWindow sceneHierarchyWindow;
 
     public ImGuiLayer(long glfwWindow, PickingTexture pickingTexture) {
         this.glfwWindow = glfwWindow;
         this.gameViewWindow = new GameViewWindow();
         this.propertiesWindow = new PropertiesWindow(pickingTexture);
         this.menuBar = new MenuBar();
-        this.sceneHeirarchyWindow = new SceneHierarchyWindow();
+        this.sceneHierarchyWindow = new SceneHierarchyWindow();
     }
 
     // Initialize Dear ImGui.
@@ -159,7 +159,7 @@ public class ImGuiLayer {
         gameViewWindow.imgui();
         propertiesWindow.update(dt, currentScene);
         propertiesWindow.imgui();
-        sceneHeirarchyWindow.imgui();
+        sceneHierarchyWindow.imgui();
 
         endFrame();
     }
