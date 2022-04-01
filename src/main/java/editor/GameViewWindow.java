@@ -40,6 +40,7 @@ public class GameViewWindow {
         }
         ImGui.endMenuBar();
 
+        ImGui.setCursorPos(ImGui.getCursorPosX(), ImGui.getCursorPosY());
         ImVec2 windowSize = getLargestSizeForViewport();
         ImVec2 windowPos = getCenteredPositionForViewport(windowSize);
 
@@ -48,22 +49,11 @@ public class GameViewWindow {
         // (Coordinates on the region of game view port only)
         ImGui.setCursorPos(windowPos.x, windowPos.y);
 
-        ImVec2 topLeft = new ImVec2();
-
-        // Cursor position in ABSOLUTE screen coordinates [0..io.DisplaySize]
-        // (Coordinates on the out most screen)
-        ImGui.getCursorScreenPos(topLeft);
-        topLeft.x -= ImGui.getScrollX();
-        topLeft.y -= ImGui.getScrollY();
-//        System.out.println("windowPos: " + windowPos);
-//        System.out.println("windowSize: " + windowSize);
-//        System.out.println("topLeft: " + topLeft);
-
         // Assign the absolute coordinates of viewport on the main screen
-        leftX = topLeft.x;
-        bottomY = topLeft.y;
-        rightX = topLeft.x + windowSize.x;
-        topY = topLeft.y + windowSize.y;
+        leftX = windowPos.x + 10;
+        rightX = windowPos.x + windowSize.x + 10;
+        bottomY = windowPos.y;
+        topY = windowPos.y + windowSize.y;
 
         int textureId = Window.getFramebuffer().getTextureId();
         // Pass
@@ -73,7 +63,7 @@ public class GameViewWindow {
         ImGui.image(textureId, windowSize.x, windowSize.y, 0, 1, 1, 0);
 
         // Set the properties to calculate the orthogonal/perspective coordinates
-        MouseListener.setGameViewportPos(new Vector2f(topLeft.x, topLeft.y));
+        MouseListener.setGameViewportPos(new Vector2f(windowPos.x + 10, windowPos.y));
         MouseListener.setGameViewportSize(new Vector2f(windowSize.x, windowSize.y));
 
         // Close an ImGui window
@@ -90,13 +80,6 @@ public class GameViewWindow {
         // assign the available region to the buffer
         // windowSize = GetContentRegionMax() - GetCursorPos()
         ImGui.getContentRegionAvail(windowSize);
-
-        // GetContentRegionMax() = Current content boundaries (typically window boundaries including scrolling,
-        //                         or current column boundaries), in windows coordinates
-        // In the case the window accidentally has scroll bar on its side
-        // -> minus the size of its scroll (if the window does not have -> scroll bar size = 0)
-        windowSize.x -= ImGui.getScrollX();
-        windowSize.y -= ImGui.getScrollY();
 
         // Calculate which direction (horizontally or vertically) should have black bars on both sides
         // Case 1: display all the width of the view port
@@ -130,8 +113,6 @@ public class GameViewWindow {
     private ImVec2 getCenteredPositionForViewport(ImVec2 aspectSize) {
         ImVec2 windowSize = new ImVec2();
         ImGui.getContentRegionAvail(windowSize);
-        windowSize.x -= ImGui.getScrollX();
-        windowSize.y -= ImGui.getScrollY();
 
         float viewportX = (windowSize.x / 2.0f) - (aspectSize.x / 2.0f);
         float viewportY = (windowSize.y / 2.0f) - (aspectSize.y / 2.0f);

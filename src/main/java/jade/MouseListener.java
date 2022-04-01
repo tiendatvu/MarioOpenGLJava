@@ -4,8 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseListener {
     private static MouseListener instance;
@@ -54,8 +53,6 @@ public class MouseListener {
         get().lastWorldY = get().worldY;
         get().xPos = xPos;
         get().yPos = yPos;
-        calcOrthoX();
-        calcOrthoY();
     }
 
     public static void mouseButtonCallback(long window, int button, int action, int mods) {
@@ -83,21 +80,6 @@ public class MouseListener {
         get().scrollY = yOffset;
     }
 
-    /**
-     * Reset the scroll value/position value at each end of a loop in Window.
-     * After each frame, we would set the current position as the original position.
-     * This could also prevent the floating error, when user stops scrolling/dragging
-     * but the scene still moves.
-     */
-    public static void endFrame() {
-        get().scrollX = 0;
-        get().scrollY = 0;
-        get().lastX = get().xPos;
-        get().lastY = get().yPos;
-        get().lastWorldX = get().worldX;
-        get().lastWorldY = get().worldY;
-    }
-
     public static float getX() {
         return (float)get().xPos;
     }
@@ -106,20 +88,12 @@ public class MouseListener {
         return (float)get().yPos;
     }
 
-    public static float getDx() {
-        return (float)(get().lastX - get().xPos);
-    }
-
     /**
      * calculate based on x axis
      * @return the distance mouse moving from the beginning frame and the next one
      */
     public static float getWorldDx() {
         return (float)(get().lastWorldX - get().worldX);
-    }
-
-    public static float getDy() {
-        return (float)(get().lastY - get().yPos);
     }
 
     /**
@@ -150,92 +124,42 @@ public class MouseListener {
         }
     }
 
-    /**
-     * Get the current position of mouse inside of the Game Viewport (GV)
-     * The Game Viewport is a small portion on the whole screen
-     * This functions is called when the mouse position is inside of the GV
-     * @return
-     */
+    public static float getWorldX() {
+        return getWorld().x;
+    }
+
+    public static float getWorldY() {
+        return getWorld().y;
+    }
+
+    public static Vector2f getWorld() {
+        float currentX = getX() - get().gameViewportPos.x;
+        currentX = (2.0f * (currentX / get().gameViewportSize.x)) - 1.0f;
+        float currentY = (getY() - get().gameViewportPos.y);
+        currentY = (2.0f * (1.0f - (currentY / get().gameViewportSize.y))) - 1;
+
+        Camera camera = Window.getScene().camera();
+        Vector4f tmp = new Vector4f(currentX, currentY, 0, 1);
+        Matrix4f inverseView = new Matrix4f(camera.getInverseView());
+        Matrix4f inverseProjection = new Matrix4f(camera.getInverseProjection());
+        tmp.mul(inverseView.mul(inverseProjection));
+        return new Vector2f(tmp.x, tmp.y);
+    }
+
     public static float getScreenX() {
-        // Get the relative position of the mouse cursor when the it is inside the GV
-        float currentX = getX() - get().gameViewportPos.x;
-        // Because the framebuffer loading for the GV is set to Window.Size,
-        // then it would be shrunk down to the size of the actual GV.
-        // If we want to consider any pixel inside of the GV,
-        // we should convert the coordinates back to the Window.Size
-        currentX = (currentX / get().gameViewportSize.x) * Window.getWidth();
-        return currentX;
+        return getScreen().x;
     }
 
-    /**
-     * Get the current position of mouse inside of the Game Viewport (GV)
-     * The Game Viewport is a small portion on the whole screen
-     * This functions is called when the mouse position is inside of the GV
-     * @return
-     */
     public static float getScreenY() {
-        float currentY = getY() - get().gameViewportPos.y;
-        currentY = Window.getHeight() - ((currentY / get().gameViewportSize.y) * Window.getHeight());
-        return currentY;
+        return getScreen().y;
     }
 
-    /**
-     * @return The mouse position.x in world coordinates
-     */
-    public static float getOrthoX() {
-        return (float) get().worldX;
-    }
-
-    /**
-     * Calculate mouse position in world coordinates (on the X axis)
-     */
-    private static void calcOrthoX() {
-        // Consider x coordinate inside of the game view port
-        // - before:
-        // currentX = getX();
+    public static Vector2f getScreen() {
         float currentX = getX() - get().gameViewportPos.x;
-        // Normalize the coordinate
-        // - before: normalize by the whole display window width
-        // currentX = (currentX / (float)Window.getWidth()) * 2.0f - 1.0f;
-        // - current: normalize by the game view port size
-        // currentX = (currentX / get().gameViewportSize.x) * 2.0f - 1.0f;
-        currentX = (currentX / get().gameViewportSize.x) * 2.0f - 1.0f;
-        // Get the mouse position into the vector
-        // In this case, we consider 2D -> x,y. but the math works with 3D (z coordinate)
-        // and w to keep the
-        Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
-
-        // Translate the mouse position into the world coordinates
-        // It also depends on the View Matrix and Projection Matrix defined in class Camera
-        Camera camera = Window.getScene().camera();
-        Matrix4f viewProjection = new Matrix4f();
-        camera.getInverseView().mul(camera.getInverseProjection(), viewProjection);
-        tmp.mul(viewProjection);
-
-        get().worldX = tmp.x;
-    }
-
-    /**
-     * @return The mouse position.y in world coordinates
-     */
-    public static float getOrthoY() {
-        return (float)get().worldY;
-    }
-
-    /**
-     * Calculate mouse position in world coordinates (on the Y axis)
-     */
-    private static void calcOrthoY() {
-        float currentY = getY() - get().gameViewportPos.y;
-        currentY = -((currentY / get().gameViewportSize.y) * 2.0f - 1.0f);
-        Vector4f tmp = new Vector4f(0, currentY, 0, 1);
-
-        Camera camera = Window.getScene().camera();
-        Matrix4f viewProjection = new Matrix4f();
-        camera.getInverseView().mul(camera.getInverseProjection(), viewProjection);
-        tmp.mul(viewProjection);
-
-        get().worldY = tmp.y;
+        currentX = (currentX / get().gameViewportSize.x) * Window.getWidth();
+        float currentY = (getY() - get().gameViewportPos.y);
+        currentY = (1.0f - (currentY / get().gameViewportSize.y)) * Window.getHeight();
+        return new Vector2f(currentX, currentY);
     }
 
     public static void setGameViewportPos(Vector2f gameViewportPos) {

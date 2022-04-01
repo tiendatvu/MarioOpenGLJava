@@ -33,18 +33,18 @@ public class Camera {
         projectionMatrix.ortho(0.0f, projectionSize.x * this.zoom,
                 0.0f, projectionSize.y * this.zoom, 0.0f, 100.0f);
         // Set the value from inverse Projection matrix to calculate the actual coordinates from NDC
-        projectionMatrix.invert(inverseProjection);
+        inverseProjection = new Matrix4f(projectionMatrix).invert();
     }
 
     public Matrix4f getViewMatrix() {
         Vector3f cameraFront = new Vector3f(0.0f, 0.0f, -1.0f);
         Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
-        this.viewMatrix.identity();
+        viewMatrix.identity();
         // set camera location (eye location)
         // set the camera position the camera looking at
         // set the up direction of the camera
         viewMatrix.lookAt(new Vector3f(position, 20.0f), cameraFront.add(position.x, position.y, 0.0f), cameraUp);
-        viewMatrix.invert(inverseView);
+        inverseView = new Matrix4f(this.viewMatrix).invert();
         return this.viewMatrix;
     }
 

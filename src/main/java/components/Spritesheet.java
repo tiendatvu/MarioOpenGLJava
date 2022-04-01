@@ -47,6 +47,10 @@ public class Spritesheet {
         return this.sprites.get(index);
     }
 
+    public List<Sprite> getSprites() {
+        return this.sprites;
+    }
+
     /**
      * Get the number of sprites in the sprite sheet
      * @return

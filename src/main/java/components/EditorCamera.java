@@ -39,12 +39,12 @@ public class EditorCamera extends Component{
         if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_MIDDLE) && dragDebounce > 0) {
             // If the button is not hold down for 2 frames,
             // just update the position of the first place clicking.
-            this.clickOrigin = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
+            this.clickOrigin = new Vector2f(MouseListener.getWorldX(), MouseListener.getWorldY());
             dragDebounce -= dt;
             return;
         } else if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_MIDDLE)) {
             // Current mouse position
-            Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
+            Vector2f mousePos = new Vector2f(MouseListener.getWorldX(), MouseListener.getWorldY());
             // Get the distance between the position start dragging and current position of the mouse
             Vector2f delta = new Vector2f(mousePos).sub(this.clickOrigin);
             // Update the camera position
