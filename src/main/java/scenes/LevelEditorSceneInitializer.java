@@ -7,6 +7,9 @@ import jade.GameObject;
 import jade.Prefabs;
 import org.joml.Vector2f;
 import util.AssetPool;
+import util.Settings;
+
+import javax.imageio.ImageTranscoder;
 
 public class LevelEditorSceneInitializer extends SceneInitializer {
     private Spritesheet sprites;
@@ -37,6 +40,12 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
         AssetPool.addSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),
                         16, 16, 81, 0));
+        AssetPool.addSpritesheet("assets/images/spritesheet.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
+                        16, 16, 26, 0));
+        AssetPool.addSpritesheet("assets/images/items.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/items.png"),
+                        16, 16, 43, 0));
         AssetPool.addSpritesheet("assets/images/gizmos.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/gizmos.png"),
                         24, 48, 3, 0));
@@ -53,6 +62,11 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
                     spr.setTexture(AssetPool.getTexture(spr.getTexture().getFilePath()));
                 }
             }
+
+            if (g.getComponent(StateMachine.class) != null) {
+                StateMachine stateMachine = g.getComponent(StateMachine.class);
+                stateMachine.refreshTextures();
+            }
         }
     }
 
@@ -64,46 +78,79 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
 
         ImGui.begin("Test window");
 
-        ImVec2 windowPos = new ImVec2();
-        ImGui.getWindowPos(windowPos);
-        ImVec2 windowSize = new ImVec2();
-        ImGui.getWindowSize(windowSize);
-        ImVec2 itemSpacing = new ImVec2();
-        ImGui.getStyle().getItemSpacing(itemSpacing);
+        if (ImGui.beginTabBar("WindowTabBar")) {
+            if (ImGui.beginTabItem("Blocks")) {
+                ImVec2 windowPos = new ImVec2();
+                ImGui.getWindowPos(windowPos);
+                ImVec2 windowSize = new ImVec2();
+                ImGui.getWindowSize(windowSize);
+                ImVec2 itemSpacing = new ImVec2();
+                ImGui.getStyle().getItemSpacing(itemSpacing);
 
-        float windowX2 = windowPos.x + windowSize.x;
-        for (int i=0; i < sprites.size(); i++) {
-            Sprite sprite = sprites.getSprite(i);
-            float scale = 2;
-            // size of common sprites for picking up
-            float spriteWidth = sprite.getWidth() * scale;
-            float spriteHeight = sprite.getHeight() * scale;
-            int id = sprite.getTexId();
-            Vector2f[] texCoords = sprite.getTexCoords();
+                float windowX2 = windowPos.x + windowSize.x;
+                for (int i = 0; i < sprites.size(); i++) {
+                    Sprite sprite = sprites.getSprite(i);
+                    float scale = 2;
+                    // size of common sprites for picking up
+                    float spriteWidth = sprite.getWidth() * scale;
+                    float spriteHeight = sprite.getHeight() * scale;
+                    int id = sprite.getTexId();
+                    Vector2f[] texCoords = sprite.getTexCoords();
 
-            ImGui.pushID(i);
-            // TODO:
-            //  try different texCoords composition
-            //  1. texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y -> correct
-            //  2. texCoords[0].x, texCoords[0].y, texCoords[2].x, texCoords[2].y -> flip
-            //  and the getOrthoY() in the MouseListener
-            if (ImGui.imageButton(id, spriteWidth, spriteHeight,
-                    texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
-                // 32 x 32 is the size of the grid on the screen
-                GameObject object = Prefabs.generateSpriteObject(sprite, 0.25f, 0.25f);
-                levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
+                    ImGui.pushID(i);
+                    // TODO:
+                    //  try different texCoords composition
+                    //  1. texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y -> correct
+                    //  2. texCoords[0].x, texCoords[0].y, texCoords[2].x, texCoords[2].y -> flip
+                    //  and the getOrthoY() in the MouseListener
+                    if (ImGui.imageButton(id, spriteWidth, spriteHeight,
+                            texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
+                        GameObject object = Prefabs.generateSpriteObject(sprite, Settings.GRID_WIDTH, Settings.GRID_HEIGHT);
+                        levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
+                    }
+                    ImGui.popID();
+
+                    ImVec2 lastButtonPos = new ImVec2();
+                    ImGui.getItemRectMax(lastButtonPos);
+                    float lastButtonX2 = lastButtonPos.x;
+                    float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
+                    // Check if there are still sprite in the list and
+                    // The width of the next sprite is not exceeded from the windowX2.x
+                    if (i + 1 < sprites.size() && nextButtonX2 < windowX2) {
+                        ImGui.sameLine();
+                    }
+                }
+                ImGui.endTabItem();
             }
-            ImGui.popID();
 
-            ImVec2 lastButtonPos = new ImVec2();
-            ImGui.getItemRectMax(lastButtonPos);
-            float lastButtonX2 = lastButtonPos.x;
-            float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
-            // Check if there are still sprite in the list and
-            // The width of the next sprite is not exceeded from the windowX2.x
-            if (i + 1 < sprites.size() && nextButtonX2 < windowX2) {
+            if (ImGui.beginTabItem("Prefabs")) {
+                Spritesheet playerSprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
+                Sprite sprite = playerSprites.getSprite(0);
+                float scale = 2;
+                float spriteWidth = sprite.getWidth() * scale;
+                float spriteHeight = sprite.getHeight() * scale;
+                int id = sprite.getTexId();
+                Vector2f[] texCoords = sprite.getTexCoords();
+
+                if (ImGui.imageButton(id, spriteWidth, spriteHeight,
+                        texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
+                    GameObject object = Prefabs.generateMario();
+                    levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
+                }
                 ImGui.sameLine();
+
+                Spritesheet items = AssetPool.getSpritesheet("assets/images/items.png");
+                sprite = items.getSprite(0);
+                id = sprite.getTexId();
+                texCoords = sprite.getTexCoords();
+                if (ImGui.imageButton(id, spriteWidth, spriteHeight,
+                        texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
+                    GameObject object = Prefabs.generateQuestionBlock();
+                    levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
+                }
+                ImGui.endTabItem();
             }
+            ImGui.endTabBar();
         }
 
         ImGui.end();

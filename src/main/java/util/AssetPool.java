@@ -28,6 +28,11 @@ public class AssetPool {
         }
     }
 
+    /**
+     * Init the texture of 1 filepath only 1 time
+     * @param resourceName
+     * @return
+     */
     public static Texture getTexture(String resourceName) {
         File file = new File(resourceName);
         if (AssetPool.textures.containsKey(file.getAbsolutePath())) {
