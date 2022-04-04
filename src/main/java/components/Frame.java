@@ -1,5 +1,8 @@
 package components;
 
+/**
+ * Contain the displayed sprite and the amount of time to display it
+ */
 public class Frame {
     public Sprite sprite;
     public float frameTime;

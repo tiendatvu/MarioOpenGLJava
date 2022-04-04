@@ -10,7 +10,13 @@ import java.util.Objects;
 
 public class StateMachine extends Component {
     private class StateTrigger {
+        /**
+         * Unique name for a state
+         */
         public String state;
+        /**
+         *
+         */
         public String trigger;
 
         public StateTrigger() {
@@ -114,6 +120,9 @@ public class StateMachine extends Component {
         }
     }
 
+    /**
+     * Display on the properties window using ImGui
+     */
     @Override
     public void imgui() {
         for (AnimationState state : states) {

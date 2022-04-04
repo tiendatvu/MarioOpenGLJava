@@ -114,7 +114,9 @@ public class GameObject {
     }
 
     /**
-     * Duplicate a GameObject
+     * Duplicate a GameObject.
+     * Copy using GSon
+     * -> cannot copy transient properties (like texture Id texId)
      * @return
      */
     public GameObject copy() {

@@ -34,6 +34,8 @@ public class MouseControls extends Component {
      * Release the pointer to the held object
      */
     public void place() {
+        // copy the holding object into a new one.
+        // This could copy anything but the transient properties -> need to create new texture id for the new object
         GameObject newObj = holdingObject.copy();
         if (newObj.getComponent(StateMachine.class) != null) {
             newObj.getComponent(StateMachine.class).refreshTextures();

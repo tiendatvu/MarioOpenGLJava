@@ -1,6 +1,6 @@
 [
   {
-    "uid": 65,
+    "uid": 0,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -157,7 +157,7 @@
                   "frameTime": 0.23
                 }
               ],
-              "time": 0.38663512,
+              "time": 0.553284,
               "doesLoop": true
             }
           ],
@@ -170,8 +170,8 @@
     "isDead": false
   },
   {
-    "uid": 66,
-    "name": "Sprite_Object_Gen",
+    "uid": 1,
+    "name": "mario",
     "components": [
       {
         "type": "jade.Transform",
@@ -208,19 +208,19 @@
             },
             "texCoords": [
               {
-                "x": 0.21428572,
+                "x": 0.071428575,
                 "y": 1.0
               },
               {
-                "x": 0.21428572,
+                "x": 0.071428575,
                 "y": 0.5
               },
               {
-                "x": 0.14285715,
+                "x": 0.0,
                 "y": 0.5
               },
               {
-                "x": 0.14285715,
+                "x": 0.0,
                 "y": 1.0
               }
             ]
@@ -357,7 +357,7 @@
                   "frameTime": 0.23
                 }
               ],
-              "time": 0.2138028,
+              "time": 0.213284,
               "doesLoop": true
             }
           ],
@@ -370,7 +370,7 @@
     "isDead": false
   },
   {
-    "uid": 67,
+    "uid": 2,
     "name": "Sprite_Object_Gen",
     "components": [
       {
