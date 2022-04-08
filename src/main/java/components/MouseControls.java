@@ -4,8 +4,16 @@ import jade.GameObject;
 import jade.KeyListener;
 import jade.MouseListener;
 import jade.Window;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector4f;
+import renderer.DebugDraw;
+import renderer.PickingTexture;
+import scenes.Scene;
 import util.Settings;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -13,6 +21,10 @@ public class MouseControls extends Component {
     GameObject holdingObject = null;
     private float debounceTime = 0.05f;
     private float debounce = debounceTime;
+
+    private boolean boxSelectSet = false;
+    private Vector2f boxSelectStart = new Vector2f();
+    private Vector2f boxSelectEnd = new Vector2f();
 
     /**
      * Click on an sprite
@@ -53,6 +65,9 @@ public class MouseControls extends Component {
     @Override
     public void editorUpdate(float dt) {
         debounce -= dt;
+        PickingTexture pickingTexture = Window.getImGuiLayer().getPropertiesWindow().getPickingTexture();
+        Scene currentScene = Window.getScene();
+
         if (holdingObject != null && debounce <= 0.0f) {
             // Snap the position of the object picked into grid line
             float x = MouseListener.getWorldX();
@@ -74,6 +89,69 @@ public class MouseControls extends Component {
             if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE)) {
                 holdingObject.destroy();
                 holdingObject = null;
+            }
+        } else if (!MouseListener.isDragging() &&
+                MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) &&
+                debounce < 0) {
+            int x = (int)MouseListener.getScreenX();
+            int y = (int)MouseListener.getScreenY();
+            int gameObjectId = pickingTexture.readPixel(x, y);
+            GameObject pickedObj = currentScene.getGameObject(gameObjectId);
+            if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null) {
+                Window.getImGuiLayer().getPropertiesWindow().setActiveGameObject(pickedObj);
+            } else if (pickedObj == null && !MouseListener.isDragging()) {
+                Window.getImGuiLayer().getPropertiesWindow().clearSelected();
+            }
+            this.debounce = 0.2f;
+        } else if (MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+            if (!boxSelectSet) {
+                Window.getImGuiLayer().getPropertiesWindow().clearSelected();
+                boxSelectStart = MouseListener.getScreen();
+                boxSelectSet = true;
+            }
+            boxSelectEnd = MouseListener.getScreen();
+            Vector2f boxSelectStartWorld = MouseListener.screenToWorld(boxSelectStart);
+            Vector2f boxSelectEndWorld = MouseListener.screenToWorld(boxSelectEnd);
+            Vector2f halfSize = (new Vector2f(boxSelectEndWorld).sub(boxSelectStartWorld).mul(0.5f));
+            DebugDraw.addBox2D(
+                    (new Vector2f(boxSelectStartWorld)).add(halfSize),
+                    new Vector2f(halfSize).mul(0.2f),
+                    0.0f
+            );
+        } else if (boxSelectSet) {
+            boxSelectSet = false;
+            int screenStartX = (int)boxSelectStart.x;
+            int screenStartY = (int)boxSelectStart.y;
+            int screenEndX = (int)boxSelectEnd.x;
+            int screenEndY = (int)boxSelectEnd.y;
+            boxSelectStart.zero();
+            boxSelectEnd.zero();
+
+            if (screenEndX < screenStartX) {
+                int tmp = screenStartX;
+                screenStartX = screenEndX;
+                screenEndX = tmp;
+            }
+            if (screenEndY < screenStartY) {
+                int tmp = screenStartY;
+                screenStartY = screenEndY;
+                screenEndY = tmp;
+            }
+
+            float[] gameObjectIds = pickingTexture.readPixels(
+                    new Vector2i(screenStartX, screenStartY),
+                    new Vector2i(screenEndX, screenEndY)
+            );
+            Set<Integer> uniqueGameObjectIds = new HashSet<>();
+            for (float objId : gameObjectIds) {
+                uniqueGameObjectIds.add((int)objId);
+            }
+
+            for (Integer gameObjectId : uniqueGameObjectIds) {
+                GameObject pickedObj = Window.getScene().getGameObject(gameObjectId);
+                if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null) {
+                    Window.getImGuiLayer().getPropertiesWindow().addActiveGameObject(pickedObj);
+                }
             }
         }
     }

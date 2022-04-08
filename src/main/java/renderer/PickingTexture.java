@@ -1,5 +1,7 @@
 package renderer;
 
+import org.joml.Vector2i;
+
 import static org.lwjgl.opengl.GL30.*;
 
 /**
@@ -85,5 +87,20 @@ public class PickingTexture {
         // and we do not want to the background to have any color
         // -> minus 1 to get the actual color value for background as -1
         return (int)(pixels[0] - 1);
+    }
+
+    public float[] readPixels(Vector2i start, Vector2i end) {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
+        glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+        Vector2i size = new Vector2i(end).sub(start).absolute();
+        int numPixels = size.x * size.y;
+        float pixels[] = new float[3 * numPixels];
+        glReadPixels(start.x, start.y, size.x, size.y, GL_RGB, GL_FLOAT, pixels);
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] -= 1;
+        }
+
+        return pixels;
     }
 }
