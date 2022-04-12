@@ -93,17 +93,21 @@ public class MouseControls extends Component {
         } else if (!MouseListener.isDragging() &&
                 MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) &&
                 debounce < 0) {
+            // Click and pick object
             int x = (int)MouseListener.getScreenX();
             int y = (int)MouseListener.getScreenY();
             int gameObjectId = pickingTexture.readPixel(x, y);
             GameObject pickedObj = currentScene.getGameObject(gameObjectId);
             if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null) {
+                // set the selected object at the clicking position
                 Window.getImGuiLayer().getPropertiesWindow().setActiveGameObject(pickedObj);
             } else if (pickedObj == null && !MouseListener.isDragging()) {
+                // clear all the current selected objects to start a new set
                 Window.getImGuiLayer().getPropertiesWindow().clearSelected();
             }
             this.debounce = 0.2f;
         } else if (MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+            // drag to select a set of objects
             if (!boxSelectSet) {
                 Window.getImGuiLayer().getPropertiesWindow().clearSelected();
                 boxSelectStart = MouseListener.getScreen();
@@ -112,13 +116,14 @@ public class MouseControls extends Component {
             boxSelectEnd = MouseListener.getScreen();
             Vector2f boxSelectStartWorld = MouseListener.screenToWorld(boxSelectStart);
             Vector2f boxSelectEndWorld = MouseListener.screenToWorld(boxSelectEnd);
-            Vector2f halfSize = (new Vector2f(boxSelectEndWorld).sub(boxSelectStartWorld).mul(0.5f));
+            Vector2f halfSize = (new Vector2f(boxSelectEndWorld).sub(boxSelectStartWorld)).mul(0.5f);
             DebugDraw.addBox2D(
                     (new Vector2f(boxSelectStartWorld)).add(halfSize),
-                    new Vector2f(halfSize).mul(0.2f),
+                    new Vector2f(halfSize).mul(2.0f),
                     0.0f
             );
         } else if (boxSelectSet) {
+            // if not perform any action, and there is a set of selected boxes
             boxSelectSet = false;
             int screenStartX = (int)boxSelectStart.x;
             int screenStartY = (int)boxSelectStart.y;

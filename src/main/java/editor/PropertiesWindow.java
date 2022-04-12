@@ -35,26 +35,6 @@ public class PropertiesWindow {
         this.pickingTexture = pickingTexture;
     }
 
-    public void update(float dt, Scene currentScene) {
-        debounce -= dt;
-        // Check debounce counter to reduce checking times
-        if (!MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && debounce < 0) {
-            int x = (int)MouseListener.getScreenX();
-            int y = (int)MouseListener.getScreenY();
-            int gameObjectId = pickingTexture.readPixel(x, y);
-            GameObject pickedObj = currentScene.getGameObject(gameObjectId);
-            if (pickedObj != null && pickedObj.getComponent(NonPickable.class) == null) {
-                // If users click on any GameObject, check if it has NonPickable component
-                activeGameObject = pickedObj;
-            } else if (pickedObj == null && !MouseListener.isDragging()) {
-                // if the mouse button is clicking on nothing (no object)
-                // or it is not dragged -> set the active GameObject as null
-                activeGameObject = null;
-            }
-            this.debounce = 0.2f;
-        }
-    }
-
     public void imgui() {
         if (activeGameObjects.size() == 1 && activeGameObjects.get(0) != null) {
             activeGameObject = activeGameObjects.get(0);
@@ -107,6 +87,8 @@ public class PropertiesWindow {
 
     public void setActiveGameObject(GameObject go) {
         if (go != null) {
+            // clear the current set of selected objects
+            // set the first element in the array as active
             clearSelected();
             this.activeGameObjects.add(go);
         }

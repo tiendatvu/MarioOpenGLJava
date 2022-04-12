@@ -21,13 +21,16 @@ public class KeyControls extends Component {
         if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
                 KeyListener.keyBeginPress(GLFW_KEY_D) &&
                 activeGameObject != null) {
+            // Duplicate an object
             GameObject newObj = activeGameObject.copy();
             Window.getScene().addGameObjectToScene(newObj);
+            // init the new object at the right next grid
             newObj.transform.position.add(Settings.GRID_WIDTH, 0.0f);
             propertiesWindow.setActiveGameObject(newObj);
         } else if (KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) &&
                 KeyListener.keyBeginPress(GLFW_KEY_D) &&
                 activeGameObjects.size() > 1) {
+            // Duplicate a set of objects
             List<GameObject> gameObjects = new ArrayList<>(activeGameObjects);
             propertiesWindow.clearSelected();
             for (GameObject go : gameObjects) {
@@ -36,6 +39,7 @@ public class KeyControls extends Component {
                 propertiesWindow.addActiveGameObject(copy);
             }
         } else if (KeyListener.keyBeginPress(GLFW_KEY_DELETE)) {
+            // Delete selected objects
             for (GameObject go : activeGameObjects) {
                 go.destroy();
             }
