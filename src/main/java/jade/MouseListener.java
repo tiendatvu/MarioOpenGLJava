@@ -189,6 +189,11 @@ public class MouseListener {
         return new Vector2f(tmp.x, tmp.y);
     }
 
+    /**
+     *
+     * @param worldCoords
+     * @return
+     */
     public static Vector2f worldToScreen(Vector2f worldCoords) {
         Camera camera = Window.getScene().camera();
         Vector4f ndcSpacePos = new Vector4f(worldCoords.x, worldCoords.y, 0, 1);
