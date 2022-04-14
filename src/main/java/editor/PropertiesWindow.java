@@ -23,7 +23,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 public class PropertiesWindow {
     // Show what GameObject is being modified
     private List<GameObject> activeGameObjects;
-    private List<Vector4f> activeGameObjectsOgColor;
+    private List<Vector4f> activeGameObjectsOgColor; // original color before being selected
     private GameObject activeGameObject = null;
     private PickingTexture pickingTexture;
 
@@ -113,8 +113,8 @@ public class PropertiesWindow {
     public void addActiveGameObject(GameObject go) {
         SpriteRenderer spr = go.getComponent(SpriteRenderer.class);
         if (spr != null) {
-            this.activeGameObjectsOgColor.add(new Vector4f(spr.getColor()));
-            spr.setColor(new Vector4f(0.8f, 0.8f, 0.0f, 0.8f));
+            this.activeGameObjectsOgColor.add(new Vector4f(spr.getColor())); // backup the original color
+            spr.setColor(new Vector4f(0.8f, 0.8f, 0.0f, 0.8f)); // set new color for the selected object
         } else {
             this.activeGameObjectsOgColor.add(new Vector4f());
         }

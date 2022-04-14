@@ -33,7 +33,11 @@ public class MouseListener {
         this.lastY = 0.0;
     }
 
+    /**
+     * Reset properties after each frame
+     */
     public static void endFrame() {
+        // Fix error scrolling forever
         get().scrollX = 0.0;
         get().scrollY = 0.0;
     }
@@ -190,7 +194,7 @@ public class MouseListener {
     }
 
     /**
-     *
+     * From the world coordinates, get the position after transforming
      * @param worldCoords
      * @return
      */

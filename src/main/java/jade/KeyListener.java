@@ -15,7 +15,13 @@ public class KeyListener {
 
     }
 
+    /**
+     * Reset properties after each frame
+     */
     public static void endFrame() {
+        // Clear the key begin pressed after each frame
+        // cause the event of begin is just a moment. it cannot last from frame to frame,
+        // which is different from keyPressed
         Arrays.fill(get().keyBeginPress, false);
     }
 

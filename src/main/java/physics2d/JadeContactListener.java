@@ -10,14 +10,34 @@ import org.jbox2d.collision.WorldManifold;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.joml.Vector2f;
 
+/**
+ * The order of collision:
+ * - preSolve
+ * - beginContact
+ * - endContact
+ * - postSolve
+ */
 public class JadeContactListener implements ContactListener {
+    /**
+     * A begin contact with B
+     * @param contact
+     */
     @Override
     public void beginContact(Contact contact) {
+        // we could assign userData as a GameObject because
+        // we define inside the file Physics2D:
+        // bodyDef.userData = rb.gameObject;
+        // fixtureDef.userData = boxCollider.gameObject;
+        // fixtureDef.userData = circleCollider.gameObject;
         GameObject objA = (GameObject)contact.getFixtureA().getUserData();
         GameObject objB = (GameObject)contact.getFixtureB().getUserData();
+        // WorldManifold is Collision information
         WorldManifold worldManifold = new WorldManifold();
-        contact.getWorldManifold(worldManifold);
+        contact.getWorldManifold(worldManifold); // get the world coordinates where collision happens
+        // the direction other object is hitting the object A
         Vector2f aNormal = new Vector2f(worldManifold.normal.x, worldManifold.normal.y);
+        // the direction other object is hitting the object B
+        // B fixture is acting at the opposite direction compared to the A fixture
         Vector2f bNormal = new Vector2f(aNormal).negate();
 
         for (Component c : objA.getAllComponents()) {

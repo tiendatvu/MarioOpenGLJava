@@ -55,6 +55,12 @@ public abstract class Component {
 
     }
 
+    /**
+     * Define when 2 objects collide, how the component would react
+     * @param collidingObject
+     * @param contact
+     * @param hitNormal
+     */
     public void beginCollision(GameObject collidingObject, Contact contact, Vector2f hitNormal) {
 
     }

@@ -130,6 +130,8 @@ public class Physics2D {
 
         int size = fixtureListSize(body);
         for (int i = 0; i < size; i++) {
+            // destroy the first element in the list
+            // -> the second becomes the first and keep continue
             body.destroyFixture(body.getFixtureList());
         }
 
@@ -175,6 +177,7 @@ public class Physics2D {
 
         CircleShape shape = new CircleShape();
         shape.setRadius(circleCollider.getRadius());
+        // set the offset to draw circle collider
         shape.m_p.set(circleCollider.getOffset().x, circleCollider.getOffset().y);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -188,12 +191,27 @@ public class Physics2D {
 
     /**
      *
+     * @param requestingObject the object requests ray cast
+     * @param point1 starting point of ray casting
+     * @param point2 ending point of ray casting
+     * @return
+     */
+    public RaycastInfo raycast(GameObject requestingObject, Vector2f point1, Vector2f point2) {
+        RaycastInfo callback = new RaycastInfo(requestingObject);
+        // box2d sends a raycast to the world
+        // call the callback function when box2d finds a collision
+        world.raycast(callback, new Vec2(point1.x, point1.y), new Vec2(point2.x, point2.y));
+        return callback;
+    }
+
+    /**
+     * Get the number of fixtures inside a body
      * @param body
      * @return
      */
     private int fixtureListSize(Body body) {
         int size = 0;
-        Fixture fixture = body.getFixtureList();
+        Fixture fixture = body.getFixtureList(); // get the first element in the list
         while (fixture != null) {
             size++;
             fixture = fixture.m_next;

@@ -80,9 +80,9 @@ public class MouseControls extends Component {
             // - Specify the position in the WORLD coordinates
             // (int)(holdingObject.transform.position.x / Settings.GRID_WIDTH) * Settings.GRID_WIDTH:
             holdingObject.transform.position.x = ((int)Math.floor(x / Settings.GRID_WIDTH) * Settings.GRID_WIDTH) +
-                                                 Settings.GRID_WIDTH / 2.0f;
+                                                 Settings.GRID_WIDTH / 2.0f; // the center x of the object held
             holdingObject.transform.position.y = ((int)Math.floor(y / Settings.GRID_HEIGHT) * Settings.GRID_HEIGHT) +
-                                                 Settings.GRID_HEIGHT / 2.0f;
+                                                 Settings.GRID_HEIGHT / 2.0f; // the center y of the object held
 
             if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
                 float halfWidth = Settings.GRID_WIDTH / 2.0f;
@@ -173,9 +173,10 @@ public class MouseControls extends Component {
     }
 
     /**
-     * Check if there is any block in
-     * @param x
-     * @param y
+     * With bottom-left coordinates of the grid,
+     * check if there is any square already placed inside of it
+     * @param x the most left of the grid
+     * @param y the bottom    of the grid
      * @return
      */
     public boolean blockInSquare(float x, float y) {
@@ -184,12 +185,13 @@ public class MouseControls extends Component {
         Vector2f end = new Vector2f(start).add(new Vector2f(Settings.GRID_WIDTH, Settings.GRID_HEIGHT));
         Vector2f startScreenf = MouseListener.worldToScreen(start);
         Vector2f endScreenf = MouseListener.worldToScreen(end);
+        // Convert to int and go inside of the box => make sure to just select the pixels inside of the grid border
         Vector2i startScreen = new Vector2i((int)startScreenf.x + 2, (int)startScreenf.y + 2);
-        Vector2i endScreen = new Vector2i((int)endScreenf.x + 2, (int)endScreenf.y + 2);
-        float[] gameObjectIds = propertiesWindow.getPickingTexture().readPixels(startScreen, endScreen);
+        Vector2i endScreen = new Vector2i((int)endScreenf.x - 2, (int)endScreenf.y - 2);
 
+        float[] gameObjectIds = propertiesWindow.getPickingTexture().readPixels(startScreen, endScreen);
         for (int i = 0; i < gameObjectIds.length; i++) {
-            if (gameObjectIds[i] > 0) {
+            if (gameObjectIds[i] >= 0) {
                 GameObject pickedObj = Window.getScene().getGameObject((int)gameObjectIds[i]);
                 if (pickedObj.getComponent(NonPickable.class) == null) {
                     return true;
