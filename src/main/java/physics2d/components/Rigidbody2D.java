@@ -28,7 +28,7 @@ public class Rigidbody2D extends Component {
     private float friction = 0.1f;
     public float angularVelocity = 0.0f;
     public float gravityScale = 1.0f;
-    public boolean isSensor = false;
+    public boolean isSensor = false; // true will never collider with anything
 
     private boolean fixedRotation = false;
     /**

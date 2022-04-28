@@ -7,6 +7,9 @@ import jade.GameObject;
 import jade.Prefabs;
 import jade.Sound;
 import org.joml.Vector2f;
+import physics2d.components.Box2DCollider;
+import physics2d.components.Rigidbody2D;
+import physics2d.enums.BodyType;
 import util.AssetPool;
 import util.Settings;
 
@@ -47,6 +50,15 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
         AssetPool.addSpritesheet("assets/images/spritesheet.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
                         16, 16, 26, 0));
+        AssetPool.addSpritesheet("assets/images/turtle.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/turtle.png"),
+                        16, 24, 4, 0));
+        AssetPool.addSpritesheet("assets/images/bigSpritesheet.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/bigSpritesheet.png"),
+                        16, 32, 42, 0));
+        AssetPool.addSpritesheet("assets/images/pipes.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/pipes.png"),
+                        32, 32, 4, 0));
         AssetPool.addSpritesheet("assets/images/items.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/items.png"),
                         16, 16, 43, 0));
@@ -110,6 +122,9 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
 
                 float windowX2 = windowPos.x + windowSize.x;
                 for (int i = 0; i < sprites.size(); i++) {
+                    if (i == 34) continue; // TODO: WHY ???
+                    if (i >= 38 && i < 61) continue; // TODO: WHY ???
+
                     Sprite sprite = sprites.getSprite(i);
                     float scale = 2;
                     // size of common sprites for picking up
@@ -127,6 +142,17 @@ public class LevelEditorSceneInitializer extends SceneInitializer {
                     if (ImGui.imageButton(id, spriteWidth, spriteHeight,
                             texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
                         GameObject object = Prefabs.generateSpriteObject(sprite, Settings.GRID_WIDTH, Settings.GRID_HEIGHT);
+                        Rigidbody2D rb = new Rigidbody2D();
+                        rb.setBodyType(BodyType.Static);
+                        object.addComponent(rb);
+                        Box2DCollider b2d = new Box2DCollider();
+                        b2d.setHalfSize(new Vector2f(0.25f, 0.25f));
+                        object.addComponent(b2d);
+                        object.addComponent(new Ground());
+                        if (i == 12) {
+                            // TODO: WHY ???
+                            //object.addComponent(new BreakableBrick());
+                        }
                         levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
                     }
                     ImGui.popID();
